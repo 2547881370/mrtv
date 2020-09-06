@@ -78,6 +78,7 @@ class UserController extends Controller {
     }
   }
 
+
   /*
    * 对返回的数据结果进行封装。
    */

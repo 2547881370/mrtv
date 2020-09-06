@@ -1,12 +1,9 @@
 const Service = require('egg').Service;
-// app/service/user.js
 const TABLE_NAME = 'mac_user';
 
 class UserService extends Service {
-  constructor(ctx,tableName) {
+  constructor(ctx) {
     super(ctx);
-    this.tableName = tableName;
-    this.datebase = this.ctx.model[tableName]; // 根据表名获得相应的数据模型
   }
   /**
    * 新增用户
@@ -109,15 +106,6 @@ class UserService extends Service {
       updateSuccess,
       data : userInfo
     }
-  }
-
-  /**
-   * 根据id主键查询数据
-   * @param {*} id
-   */
-  async getById(id){
-    const entity = await this.datebase.findByPk(id); // 根据id主键查询数据
-    return entity; //将结果集返回
   }
 
 }

@@ -11,4 +11,5 @@ module.exports = app => {
   router.post('/user/login',  controller.user.login);
   router.post('/user/setuserInfo',  controller.user.setuserInfo);
   router.post('/upload',controller.upload.saveAvatar);
+  router.post('/singin/addSingin',controller.singIn.addSingin);
 };
