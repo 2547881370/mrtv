@@ -13,6 +13,9 @@
     "egg-mysql": "^3.0.0",
     "egg-redis": "^2.4.0",
     "egg-scripts": "^2.11.0",
+    "egg-sequelize": "^5.2.2",
+    "egg-swagger-doc": "^2.3.2",
+    "mysql2": "^2.1.0",
     "pump": "^3.0.0",
     "silly-datetime": "^0.1.2"
   },
@@ -22,6 +25,7 @@
     "egg-bin": "^4.11.0",
     "egg-ci": "^1.11.0",
     "egg-mock": "^3.21.0",
+    "egg-sequelize-auto": "^0.1.1",
     "eslint": "^5.13.0",
     "eslint-config-egg": "^7.1.0"
   },
@@ -38,7 +42,8 @@
     "cov": "egg-bin cov",
     "lint": "eslint .",
     "ci": "npm run lint && npm run cov",
-    "autod": "autod"
+    "autod": "autod",
+    "dbload": "egg-sequelize-auto -o ./app/model -h localhost -p 3306 -d root -u root -x root"
   },
   "ci": {
     "version": "10"

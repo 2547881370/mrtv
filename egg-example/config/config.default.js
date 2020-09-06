@@ -20,7 +20,7 @@ module.exports = appInfo => {
 
   config.xtoken = {
     // 配置所有的前缀为 /access 或 /morepath 的 url 不经过该中间件
-    ignore: [ '/user/addUser', '/user/login' ]
+    ignore: [ '/user/addUser', '/user/login' , /^\/swagger/ ]
   };
 
   //配置jwt的密钥
@@ -47,6 +47,53 @@ module.exports = appInfo => {
 
   //配置文件上传路径
   config.uploadDir = _config.uploadDir;
+
+  //配置 sequelize 插件
+  config.sequelize = {
+    dialect: 'mysql',   // 数据库类型，支持 mysql,sqlite,mssql,pgsql,oracle
+    host: "localhost",  // 数据库服务器地址
+    port: 3306, // 数据库连接端口号
+    database: "root", // 数据库名称
+    username: "root",   // 数据库登录用户名
+    password: "root",   // 数据库登录密码
+    define: {
+      freezeTableName: true, // 阻止数据表名变为复数
+      timestamps: false // 阻止model生成createAt和updateAt字段
+    }
+  };
+
+  //配置 egg-swagger-doc
+  config.swaggerdoc = {
+    dirScanner: './app/controller',
+    apiInfo: {
+      title: 'mrtv RESTful APIs',
+      description: 'swagger-ui for egg',
+      version: '1.0.0',
+    },
+    schemes: ['http', 'https'],
+    consumes: ['application/json'],
+    produces: ['application/json'],
+    securityDefinitions: {
+      // apikey: {
+      //   type: 'apiKey',
+      //   name: 'clientkey',
+      //   in: 'header',
+      // },
+      // oauth2: {
+      //   type: 'oauth2',
+      //   tokenUrl: 'http://petstore.swagger.io/oauth/dialog',
+      //   flow: 'password',
+      //   scopes: {
+      //     'write:access_token': 'write access_token',
+      //     'read:access_token': 'read access_token',
+      //   },
+      // },
+    },
+    enableSecurity: false,
+    // enableValidate: true,
+    routerMap: false,
+    enable: true,
+  };
 
   return {
     ...config,

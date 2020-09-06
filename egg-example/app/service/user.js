@@ -3,6 +3,11 @@ const Service = require('egg').Service;
 const TABLE_NAME = 'mac_user';
 
 class UserService extends Service {
+  constructor(ctx,tableName) {
+    super(ctx);
+    this.tableName = tableName;
+    this.datebase = this.ctx.model[tableName]; // 根据表名获得相应的数据模型
+  }
   /**
    * 新增用户
    * @param query
@@ -106,6 +111,14 @@ class UserService extends Service {
     }
   }
 
+  /**
+   * 根据id主键查询数据
+   * @param {*} id
+   */
+  async getById(id){
+    const entity = await this.datebase.findByPk(id); // 根据id主键查询数据
+    return entity; //将结果集返回
+  }
 
 }
 
