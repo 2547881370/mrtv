@@ -3,8 +3,8 @@ module.exports = {
   redis : {
     client: {
       port: 6379,          // Redis port
-      host: '127.0.0.1',   // Redis host
-      password: 'auth',
+      host: '139.9.114.198',   // Redis host
+      password: 'root',
       db: 0,
     },
   },
@@ -12,15 +12,15 @@ module.exports = {
     // 单数据库信息配置
     client: {
       // host
-      host: 'localhost',
+      host: '139.9.114.198',
       // 端口号
       port: '3306',
       // 用户名
       user: 'root',
       // 密码
-      password: 'root',
+      password: '123456',
       // 数据库名
-      database: 'root',
+      database: 'tv',
     },
     // 是否加载到 app 上，默认开启
     app: true,

@@ -51,11 +51,11 @@ module.exports = appInfo => {
   //配置 sequelize 插件
   config.sequelize = {
     dialect: 'mysql',   // 数据库类型，支持 mysql,sqlite,mssql,pgsql,oracle
-    host: "localhost",  // 数据库服务器地址
+    host: "139.9.114.198",  // 数据库服务器地址
     port: 3306, // 数据库连接端口号
-    database: "root", // 数据库名称
+    database: "tv", // 数据库名称
     username: "root",   // 数据库登录用户名
-    password: "root",   // 数据库登录密码
+    password: "123456",   // 数据库登录密码
     define: {
       freezeTableName: true, // 阻止数据表名变为复数
       timestamps: false // 阻止model生成createAt和updateAt字段
