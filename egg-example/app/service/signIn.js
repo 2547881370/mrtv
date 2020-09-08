@@ -79,7 +79,6 @@ class SignInServer extends Service {
     //获取用户信息
     let { data } = await ctx.helper.getUserInformation();
     let sql = `SELECT * FROM sign_record WHERE user_name = "${data}" AND sign_record.date_month >= "${startDate}" AND sign_record.date_month <= "${endDate}" `;
-    console.log(startDate,endDate,99999,sql)
     let results = await this.app.mysql.query(sql);
     if(results && results.length > 0){
       return {

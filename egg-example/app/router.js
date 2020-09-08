@@ -13,4 +13,5 @@ module.exports = app => {
   router.post('/upload',controller.upload.saveAvatar);
   router.post('/singin/addSingin',controller.singIn.addSingin);
   router.post('/singin/getUserSingInAge',controller.singIn.getUserSingInAge);
+  router.post('/level/getUserLevelList',controller.level.getUserLevelList);
 };

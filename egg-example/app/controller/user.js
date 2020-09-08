@@ -3,7 +3,7 @@
 const Controller = require('egg').Controller;
 
 /**
- * @controller user
+ * @controller user Controller
  */
 class UserController extends Controller {
   /**

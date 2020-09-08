@@ -3,7 +3,7 @@ const  pump = require('pump');
 const Controller = require('egg').Controller;
 
 /**
- * @controller upload
+ * @controller upload Controller
  */
 class uploadController extends Controller {
   /**

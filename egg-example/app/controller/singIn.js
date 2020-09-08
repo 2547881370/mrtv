@@ -1,7 +1,7 @@
 const Controller = require('egg').Controller;
 
 /**
- * @controller SingIn
+ * @controller SingIn Controller
  */
 class SingInController extends Controller {
   /**
@@ -44,9 +44,10 @@ class SingInController extends Controller {
       })
     }
   }
+
   /*
- * 对返回的数据结果进行封装。
- */
+  * 对返回的数据结果进行封装。
+  */
   JsonBody (data) {
     this.ctx.body = {
       data,
