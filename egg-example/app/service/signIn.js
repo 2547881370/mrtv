@@ -54,6 +54,41 @@ class SignInServer extends Service {
       }
     }
   }
+
+  /**
+   * 获取用户在某个时间段所有的签到记录
+   */
+  async _getUserSingInAge(query){
+    const { ctx, app } = this;
+    let {
+      startDate , endDate
+    } = query;
+    
+    if (startDate === null || startDate === '' || undefined === startDate) {
+      throw new Error('请求参数【startDate】不允许为空');
+    }
+    if (endDate === null || endDate === '' || undefined === endDate) {
+      throw new Error('请求参数【endDate】不允许为空');
+    }
+    let _startDateLength = startDate.split("-");
+    let _endDateLength = endDate.split("-");
+    if(_startDateLength.length != 3 || _endDateLength.length != 3){
+      throw new Error('请求参数日期格式不正确');
+    }
+    
+    //获取用户信息
+    let { data } = await ctx.helper.getUserInformation();
+    let sql = `SELECT * FROM sign_record WHERE user_name = "${data}" AND sign_record.date_month >= "${startDate}" AND sign_record.date_month <= "${endDate}" `;
+    console.log(startDate,endDate,99999,sql)
+    let results = await this.app.mysql.query(sql);
+    if(results && results.length > 0){
+      return {
+        results
+      }
+    }else{
+      return false
+    }
+  }
 };
 
 module.exports = SignInServer;
