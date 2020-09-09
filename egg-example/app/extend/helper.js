@@ -69,6 +69,38 @@ module.exports = {
   },
 
   /**
+   * [dateAddDays 从某个日期增加n天后的日期]
+   * @param  {[string]} dateStr  [日期字符串]
+   * @param  {[int]} dayCount [增加的天数]
+   * @return {[string]}[增加n天后的日期字符串]
+   *
+   * dateAddDays('2019-03-18',27); //"2019-4-14"
+   */
+  dateAddDays(dateStr,dayCount) {
+    var tempDate=new Date(dateStr.replace(/-/g,"/"));//把日期字符串转换成日期格式
+    var resultDate=new Date((tempDate/1000+(86400*dayCount))*1000);//增加n天后的日期
+    var resultDateStr=resultDate.getFullYear()+"-"+(resultDate.getMonth()+1)+"-"+(resultDate.getDate()+" "+ resultDate.getHours().toString()+":"+resultDate.getMinutes().toString());//将日期转化为字符串格式
+    return resultDateStr;
+  },
+
+  /**
+   *  日期对比大小
+   * @param dateTime1
+   * @param dateTime2
+   * @returns Boolean true第一个比第二个大 false第一个比第二个小
+   */
+  compareDate(dateTime1,dateTime2){
+      var oDate1 = new Date(dateTime1);
+      var oDate2 = new Date(dateTime2);
+      if(oDate1 > oDate2){
+        return true
+      }else{
+        return false
+      }
+    },
+
+
+  /**
    * 判断对象是否有参数
    */
   isFlagObjectKeys(obj){
