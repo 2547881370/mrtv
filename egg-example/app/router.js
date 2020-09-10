@@ -24,4 +24,7 @@ module.exports = app => {
   router.post('/level/getUserLevelList',controller.level.getUserLevelList);
   router.post('/level/setUserLevel',controller.level.setUserLevel);
   router.post('/level/initUserLevel',controller.level.initUserLevel);
+  router.post('/task/getTaskList',controller.task.getTaskList);
+  router.post('/task/getUserTaskLisk',controller.task.getUserTaskLisk);
+  router.post('/task/setTaskUserController',controller.task.setTaskUserController);
 };
