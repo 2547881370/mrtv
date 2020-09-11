@@ -109,5 +109,18 @@ module.exports = {
     }else{
       return false
     }
+  },
+
+  /**
+   * 随机生成邀请码
+   */
+   uuid() {
+    var s = [];
+    var hexDigits = "0123456789abcdefghijklmnopq";
+    for (var i = 0; i < 12; i++) {
+      s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+    }
+    var uuid = s.join("");
+    return uuid
   }
 };

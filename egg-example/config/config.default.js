@@ -20,7 +20,7 @@ module.exports = appInfo => {
 
   config.xtoken = {
     // 配置所有的前缀为 /access 或 /morepath 的 url 不经过该中间件
-    ignore: [ '/user/addUser', '/user/login' , /^\/swagger/ ]
+    ignore: [ '/user/addUser', '/user/login' , /^\/swagger/ , '/code/sendUserCode' ]
   };
 
   //配置jwt的密钥
