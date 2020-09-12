@@ -66,7 +66,8 @@ class CodeServer extends Service {
     async _sendUserCode(query){
         let { ctx , app } = this;
         let { code_id , user_name , user_pwd } = query;
-        let res ;
+        let res , date;
+        date = ctx.helper.dateFormat('YYYY-mm-dd HH:MM', new Date());
         res = await app.mysql.get(MAC_USER , {
             user_name
         });
@@ -80,6 +81,7 @@ class CodeServer extends Service {
                 user_name, // 账号名称 *
                 code_id,//邀请码
                 user_pwd,//密码
+                date,//注册时间
             });
 
             if(result.affectedRows === 1){
@@ -114,6 +116,53 @@ class CodeServer extends Service {
                     code : "000000"
                 }
             }
+        }
+    }
+
+    /**
+     * 查询用户邀请人注册列表
+     */
+    async _sendUserCodeAge(){
+        let { ctx , app } = this;
+        let { data } = await ctx.helper.getUserInformation();
+        let res , list = [] , msg , code , code_id , result , sql ;
+        res = await app.mysql.get(TABLE_NAME , {
+            user_name : data
+        });
+        if(res && Object.keys(res).length > 0){
+            code_id = res.code_id;
+            code_id = code_id.split(",");
+
+            for(let i = 0 ; i < code_id.length ; i++){
+                let b = code_id[i];
+                sql = ` SELECT
+                        user_code_relation.user_name,
+                        user_code_relation.code_id,
+                        user_code_relation.id,
+                        user_code_relation.user_pwd,
+                        user_code_relation.date
+                        FROM
+                        user_code_relation
+                        WHERE
+                        user_code_relation.code_id = "${b}"`;
+                result = await app.mysql.query(sql);
+                if(result && result.length > 0){
+                    list = [...list , ...result]
+                }
+            };
+            msg = "查询成功";
+            code = "000000"
+
+        }else{
+            console.log("____________")
+            msg = "查询成功";
+            list = [];
+            code = "000000"
+        };
+        return {
+            msg,
+            code,
+            data : list
         }
     }
 }

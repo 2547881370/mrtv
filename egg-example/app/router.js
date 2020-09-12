@@ -35,5 +35,6 @@ module.exports = app => {
   router.post('/goldCoin/setGoldCoinUser',controller.goldCoin.setGoldCoinUserModel);
   router.post('/code/addCodeUser',controller.code.addCodeUser);
   router.post('/code/sendUserCode',controller.code.sendUserCode);
+  router.post('/code/sendUserCodeAge',controller.code.sendUserCodeAge);
 
 };

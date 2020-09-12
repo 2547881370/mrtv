@@ -31,6 +31,19 @@ class CodeController extends Controller {
         this.JsonBody(res);
     }
 
+    /**
+     * @summary 查询用户邀请人注册列表
+     * @description 查询用户邀请人注册列表
+     * @router post /code/sendUserCodeAge
+     * @request header string *token
+     * @response 200 sendUserCodeAgeResponse 查询成功
+     */
+    async sendUserCodeAge(){
+        let { ctx , app } = this;
+        let res = await ctx.service.code._sendUserCodeAge();
+        this.JsonBody(res);
+    }
+
     /*
      * 对返回的数据结果进行封装。
      */
