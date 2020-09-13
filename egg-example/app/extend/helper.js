@@ -46,7 +46,7 @@ module.exports = {
 
   /**
    * 日期格式化
-   * dateFormat("YYYY-mm-dd HH:MM", date)
+   * dateFormat("YYYY-mm-dd HH:MM:SS", date)
    */
   dateFormat(fmt, date) {
     let ret;
@@ -122,5 +122,59 @@ module.exports = {
     }
     var uuid = s.join("");
     return uuid
+  },
+
+  /*
+   * 对返回的数据结果进行封装。
+   */
+    JsonBody (data) {
+      this.ctx.body = data;
+    },
+
+  /**
+   * Unix时间戳转年月日
+   * @returns {string} "2020-09-12 23:53:58"
+   */
+  getTime(/** timestamp=0 **/) {
+    var ts = arguments[0] || 0;
+    var t,y,m,d,h,i,s;
+    t = ts ? new Date(ts*1000) : new Date();
+    y = t.getFullYear();
+    m = t.getMonth()+1;
+    d = t.getDate();
+    h = t.getHours();
+    i = t.getMinutes();
+    s = t.getSeconds();
+    // 可根据需要在这里定义时间格式
+    return y+'-'+(m<10?'0'+m:m)+'-'+(d<10?'0'+d:d)+' '+(h<10?'0'+h:h)+':'+(i<10?'0'+i:i)+':'+(s<10?'0'+s:s);
+  },
+
+  /**
+   * 将常规时间戳转换成unix
+   * @param {string} str 2008-10-09 21:35:28
+   * @return 10位的unix时间戳
+   */
+  unix(str){
+    var new_str = str.replace(/:/g,'-');
+    new_str = new_str.replace(/ /g,'-');
+    var arr = new_str.split("-");
+    var datum = new Date(Date.UTC(arr[0],arr[1]-1,arr[2],arr[3]-8,arr[4],arr[5]));
+    return datum.getTime()/1000;
+  },
+
+  /**
+   * 判断传入的变量是否为空
+   * @param {string || object || array} str
+   */
+  flagBool(str){
+    if(typeof str == "string"){
+      return (str != null && str != undefined && str != "");
+    }else if(Array.isArray(str)){
+      return str.length > 0 ;
+    }else if(typeof str == "number"){
+      return (str != null && str != undefined && str != "");
+    }else if(Object.prototype.toString.call(str) == "[object Object]"){
+      return Object.keys(str).length > 0;
+    }
   }
 };

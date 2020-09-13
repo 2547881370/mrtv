@@ -67,9 +67,8 @@ class GoldCoinController extends Controller {
      * 对返回的数据结果进行封装。
      */
     JsonBody (data) {
-        this.ctx.body = {
-            data,
-        };
+        let { ctx } = this;
+        ctx.helper.JsonBody(data)
     }
 }
 

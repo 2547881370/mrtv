@@ -29,12 +29,21 @@ module.exports = app => {
   router.post('/task/getTaskList',controller.task.getTaskList);
   router.post('/task/getUserTaskLisk',controller.task.getUserTaskLisk);
   router.post('/task/setTaskUserController',controller.task.setTaskUserController);
+
+  //goldCoin
   router.post('/goldCoin/getUserGoldCoin',controller.goldCoin.getUserGoldCoin);
   router.post('/goldCoin/addGoldCoinUser',controller.goldCoin.addGoldCoinUserModel);
   router.post('/goldCoin/removeGoldCoinUser',controller.goldCoin.removeGoldCoinUserModel);
   router.post('/goldCoin/setGoldCoinUser',controller.goldCoin.setGoldCoinUserModel);
+
+  //code
   router.post('/code/addCodeUser',controller.code.addCodeUser);
   router.post('/code/sendUserCode',controller.code.sendUserCode);
   router.post('/code/sendUserCodeAge',controller.code.sendUserCodeAge);
+  router.post('/video/getVideoTypeList',controller.video.getVideoTypeList);
+  router.post('/video/getVideoList',controller.video.getVideoList);
+  router.post('/video/getVideoInfo',controller.video.getVideoInfo);
+  router.post('/video/getVideoLog',controller.video.getVideoLog);
+  router.post('/video/getVideoLogList',controller.video.getVideoLogList);
 
 };

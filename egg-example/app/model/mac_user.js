@@ -154,6 +154,14 @@ module.exports = app => {
       type: DataTypes.INTEGER(10).UNSIGNED,
       allowNull: false,
       defaultValue: '0'
+    },
+    user_last_level_time: {
+      type: DataTypes.DATE,
+      allowNull: true
+    },
+    user_end_level_time: {
+      type: DataTypes.DATE,
+      allowNull: true
     }
   }, {
     tableName: 'mac_user'

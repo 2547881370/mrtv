@@ -49,6 +49,10 @@ module.exports = app => {
       type: DataTypes.INTEGER(10).UNSIGNED,
       allowNull: false,
       defaultValue: '0'
+    },
+    ulog_date: {
+      type: DataTypes.INTEGER(10),
+      allowNull: false
     }
   }, {
     tableName: 'mac_ulog'
