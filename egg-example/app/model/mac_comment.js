@@ -66,7 +66,7 @@ module.exports = app => {
       defaultValue: '0'
     },
     comment_reply: {
-      type: DataTypes.INTEGER(8).UNSIGNED,
+      type: DataTypes.STRING(255),
       allowNull: false,
       defaultValue: '0'
     },
@@ -74,6 +74,18 @@ module.exports = app => {
       type: DataTypes.INTEGER(8).UNSIGNED,
       allowNull: false,
       defaultValue: '0'
+    },
+    comment_up_user_name: {
+      type: DataTypes.STRING(255),
+      allowNull: false
+    },
+    comment_down_user_name: {
+      type: DataTypes.STRING(255),
+      allowNull: false
+    },
+    comment_report_user_name: {
+      type: DataTypes.STRING(255),
+      allowNull: false
     }
   }, {
     tableName: 'mac_comment'

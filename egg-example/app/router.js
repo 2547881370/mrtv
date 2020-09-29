@@ -40,10 +40,18 @@ module.exports = app => {
   router.post('/code/addCodeUser',controller.code.addCodeUser);
   router.post('/code/sendUserCode',controller.code.sendUserCode);
   router.post('/code/sendUserCodeAge',controller.code.sendUserCodeAge);
+
+  //video
   router.post('/video/getVideoTypeList',controller.video.getVideoTypeList);
   router.post('/video/getVideoList',controller.video.getVideoList);
   router.post('/video/getVideoInfo',controller.video.getVideoInfo);
   router.post('/video/getVideoLog',controller.video.getVideoLog);
   router.post('/video/getVideoLogList',controller.video.getVideoLogList);
+  router.post('/comment/addComment',controller.comment.addComment);
+  router.post('/comment/removeComment',controller.comment.removeComment);
+  router.post('/comment/upComment',controller.comment.upComment);
+  router.post('/comment/downComment',controller.comment.downComment);
+  router.post('/comment/reportComment',controller.comment.reportComment);
+  router.post('/comment/videoCommentList',controller.comment.videoCommentList);
 
 };

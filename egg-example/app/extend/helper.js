@@ -176,5 +176,39 @@ module.exports = {
     }else if(Object.prototype.toString.call(str) == "[object Object]"){
       return Object.keys(str).length > 0;
     }
+  },
+
+  /**
+   * 10进制整数转ip地址
+   * @param {string} 10进制数据
+   */
+   numToIp(number) {
+      var ip = number % 256;
+      for (var i = 1; i <= 3; i++) {
+        number = Math.floor(number / 256);
+        ip = number % 256 + '.' + ip;
+      }
+      return ip; // As string
+    },
+
+  /**
+   * IP地址转10进制整数
+   * @param {string} ip地址
+   */
+  ipToNumber(ip) {
+    var num = 0;
+    if(ip == "") {
+      return num;
+    }
+    var aNum = ip.split(".");
+    if(aNum.length != 4) {
+      return num;
+    }
+    num += parseInt(aNum[0]) << 24;
+    num += parseInt(aNum[1]) << 16;
+    num += parseInt(aNum[2]) << 8;
+    num += parseInt(aNum[3]) << 0;
+    num = num >>> 0;//这个很关键，不然可能会出现负数的情况
+    return num;
   }
 };
