@@ -7,7 +7,7 @@ class CommentController extends Controller {
     /**
      * @summary 新增评论
      * @description 新增评论
-     * @router post comment/addComment
+     * @router post /comment/addComment
      * @request header string *token
      * @request body addCommentRequest *body
      * @response 200 addCommentResponse 新增成功
@@ -22,7 +22,7 @@ class CommentController extends Controller {
     /**
      * @summary 删除评论
      * @description 删除评论
-     * @router post comment/removeComment
+     * @router post /comment/removeComment
      * @request header string *token
      * @request body removeCommentRequest *body
      * @response 200 baseResponse 删除成功
@@ -37,7 +37,7 @@ class CommentController extends Controller {
     /**
      * @summary 评论点赞
      * @description 评论点赞
-     * @router post comment/upComment
+     * @router post /comment/upComment
      * @request header string *token
      * @request body upCommentRequest *body
      * @response 200 baseResponse 点赞成功
@@ -52,7 +52,7 @@ class CommentController extends Controller {
     /**
      * @summary 评论点踩
      * @description 评论点踩
-     * @router post comment/downComment
+     * @router post /comment/downComment
      * @request header string *token
      * @request body downCommentRequest *body
      * @response 200 baseResponse 点赞成功
@@ -67,7 +67,7 @@ class CommentController extends Controller {
     /**
      * @summary 评论举报
      * @description 评论点赞
-     * @router post comment/reportComment
+     * @router post /comment/reportComment
      * @request header string *token
      * @request body reportCommentRequest *body
      * @response 200 baseResponse 点赞成功
@@ -82,7 +82,7 @@ class CommentController extends Controller {
     /**
      * @summary 获取视频评论集合
      * @description 获取视频评论集合
-     * @router post comment/videoCommentList
+     * @router post /comment/videoCommentList
      * @request header string *token
      * @request body videoCommentListRequest *body
      * @response 200 addCommentResponse 获取成功
