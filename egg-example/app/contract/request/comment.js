@@ -24,6 +24,8 @@ module.exports = {
         comment_report_user_name : {type : "string" , required : true , description  :"举报人名称集合"},
     },
     videoCommentListRequest : {
-        comment_rid : {type : "string" , required : true , description : "关联视频id"}
-    }
+        comment_rid : {type : "string" , required : true , description : "关联视频id"},
+        limit : { type: 'number', required: true, description: '' },
+        page : { type: 'number', required: true, description: '' },
+    },
 }

@@ -249,8 +249,11 @@ class CommentService extends Service {
     async _videoCommentList(data){
         let { ctx , app } = this;
         let result , query , pg;
+        let { limit , page } = data;
         let { comment_rid } = data;
         query = {
+            limit: limit,
+            offset: page * limit - limit,
             where : {
                 comment_rid : comment_rid
             }
