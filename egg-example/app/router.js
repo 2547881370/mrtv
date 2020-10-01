@@ -58,7 +58,12 @@ module.exports = app => {
 
   //advertisement
   router.post('/advertisement/getAdvertisementRequest',controller.advertisement.getAdvertisement);
+
+  //gbook
   router.post('/gbook/addGbook',controller.gbook.addGbook);
   router.post('/gbook/gbookList',controller.gbook.gbookList);
+  router.post('/fav/addFav',controller.fav.addFav);
+  router.post('/fav/removeFav',controller.fav.removeFav);
+  router.post('/fav/getFavList',controller.fav.getFavList);
 
 };

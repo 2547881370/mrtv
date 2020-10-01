@@ -24,6 +24,10 @@ module.exports = app => {
     jump: {
       type: DataTypes.INTEGER(8),
       allowNull: false
+    },
+    title: {
+      type: DataTypes.STRING(255),
+      allowNull: false
     }
   }, {
     tableName: 'mac_advertisement'
