@@ -14,7 +14,7 @@ class VideoController extends Controller {
      */
     async getVideoTypeList(){
         let { ctx , app , service} = this;
-        const result = await service.video._getVideoTypeList();
+        let result = await service.video._getVideoTypeList();
         this.JsonBody(result);
     }
 
@@ -29,7 +29,7 @@ class VideoController extends Controller {
     async getVideoList(){
         let { ctx , app , service} = this;
         const body = ctx.request.body; // 获取请求参数。
-        const result = await service.video._getVideoList(body);
+        let result = await service.video._getVideoList(body);
         this.JsonBody(result);
     }
 
@@ -44,7 +44,7 @@ class VideoController extends Controller {
     async getVideoInfo(){
         let { ctx , app , service} = this;
         let body = ctx.request.body;
-        const result = await service.video._getVideoInfo(body);
+        let result = await service.video._getVideoInfo(body);
         this.JsonBody(result);
 
     }
@@ -60,7 +60,7 @@ class VideoController extends Controller {
     async getVideoLog(){
         let { ctx , app , service} = this;
         let body = ctx.request.body;
-        const result = await service.video._getVideoLog(body);
+        let result = await service.video._getVideoLog(body);
         this.JsonBody(result);
     }
 
@@ -73,9 +73,40 @@ class VideoController extends Controller {
      */
     async getVideoLogList(){
         let { ctx , app , service} = this;
-        const result = await service.video._getVideoLogList();
+        let result = await service.video._getVideoLogList();
         this.JsonBody(result);
     }
+
+    /**
+     * @summary 获取影视分类榜单
+     * @description 获取影视榜单
+     * @router post /video/getVideoRanking
+     * @request body getVideoRankingRequest *body
+     * @request header string *token
+     * @response 200 videoListResponse 获取成功
+     */
+    async getVideoRanking(){
+        let { ctx , app , service} = this;
+        let body = ctx.request.body;
+        let result = await service.video._getVideoRanking(body);
+        this.JsonBody(result);
+    }
+
+    /**
+     * @summary 获取视频分类推荐
+     * @description 获取视频分类推荐
+     * @router post /video/getVideoRecommend
+     * @request body getVideoRecommendRequest *body
+     * @request header string *token
+     * @response 200 videoListResponse 获取成功
+     */
+    async getVideoRecommend(){
+        let { ctx , app , service} = this;
+        let body = ctx.request.body;
+        let result = await service.video._getVideoRecommend(body);
+        this.JsonBody(result);
+    }
+
     /*
      * 对返回的数据结果进行封装。
      */

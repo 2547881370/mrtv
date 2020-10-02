@@ -62,8 +62,11 @@ module.exports = app => {
   //gbook
   router.post('/gbook/addGbook',controller.gbook.addGbook);
   router.post('/gbook/gbookList',controller.gbook.gbookList);
+
+  //fav
   router.post('/fav/addFav',controller.fav.addFav);
   router.post('/fav/removeFav',controller.fav.removeFav);
   router.post('/fav/getFavList',controller.fav.getFavList);
+  router.post('/notice/getNotice',controller.notice.getNotice);
 
 };

@@ -24,7 +24,7 @@ module.exports = app => {
     },
     date: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: true
     }
   }, {
     tableName: 'user_code_relation'

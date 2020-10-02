@@ -22,5 +22,17 @@ module.exports = {
         ulog_nid: { type: 'string', required: true, description: '播放集数' },
         ulog_time: { type: 'string', required: true, description: '日志时间' },
         ulog_date: { type: 'string', required: false, description: '播放进度' }
+    },
+    getVideoRankingRequest : {
+        type_id: { type: 'string', required: true, description: '分类id 分类id枚举为主' },
+        time: { type: 'string', required: true, description: '几天以内的排行' },
+        limit : { type: 'string', required: true, description: '每页多少条数据' },
+        page : { type: 'string', required: true, description: '当前页' },
+    },
+    getVideoRecommendRequest : {
+        type_id: { type: 'string', required: true, description: '分类id 分类id枚举为主' },
+        vod_level: { type: 'string', required: true, description: '推荐等级 默认为8的为推荐级别的视频' },
+        limit : { type: 'string', required: true, description: '每页多少条数据' },
+        page : { type: 'string', required: true, description: '当前页' },
     }
 }

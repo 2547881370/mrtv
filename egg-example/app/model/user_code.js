@@ -9,7 +9,7 @@ module.exports = app => {
       allowNull: false
     },
     code_id: {
-      type: DataTypes.STRING(1000),
+      type: DataTypes.STRING(255),
       allowNull: false
     },
     id: {

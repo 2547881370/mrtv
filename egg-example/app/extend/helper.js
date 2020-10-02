@@ -84,6 +84,21 @@ module.exports = {
   },
 
   /**
+   * [dateAddDays 从某个日期减少n天后的日期]
+   * @param  {[string]} dateStr  [日期字符串]
+   * @param  {[int]} dayCount [减少的天数]
+   * @return {[string]}[减少n天后的日期字符串]
+   *
+   * dateRemoveDays('2019-03-18',27); //"2019-4-14"
+   */
+  dateRemoveDays(dateStr,dayCount) {
+    var tempDate=new Date(dateStr.replace(/-/g,"/"));//把日期字符串转换成日期格式
+    var resultDate=new Date((tempDate/1000  - (86400*dayCount))*1000);//增加n天后的日期
+    var resultDateStr=resultDate.getFullYear()+"-"+(resultDate.getMonth()+1)+"-"+(resultDate.getDate()+" "+ resultDate.getHours().toString()+":"+resultDate.getMinutes().toString());//将日期转化为字符串格式
+    return resultDateStr;
+  },
+
+  /**
    *  日期对比大小
    * @param dateTime1
    * @param dateTime2

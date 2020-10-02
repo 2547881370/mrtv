@@ -16,7 +16,8 @@ class VideoServer extends Service {
      * @param {*} id
      */
     async _getVideoTypeList(id) {
-        const result = await this.databaseMacType.findAll();
+        let result = await this.databaseMacType.findAll();
+        console.log(result,"1111")
         return {
             msg: "获取成功",
             code: "000000",
@@ -155,6 +156,59 @@ class VideoServer extends Service {
             }
         }
         return result;
+    }
+
+    /**
+     * 获取视频分类榜单
+     * 以播放人气为排行
+     */
+    async _getVideoRanking(data){
+        let { ctx , app } = this;
+        let result , query , pg;
+        let { type_id ,  time , limit , page} = data;
+        let _time = ctx.helper.dateFormat("YYYY-mm-dd" , new Date());
+        _time = ctx.helper.dateRemoveDays(_time , time);
+        _time = _time.split(" ")[0] + " 00:00:00"
+        time = ctx.helper.unix(_time);
+        let endDate = ctx.helper.dateFormat("YYYY-mm-dd HH:MM:SS" , new Date());
+        endDate = ctx.helper.unix(endDate);
+        query = {
+            limit: limit,
+            offset: page * limit - limit,
+            where: {vod_time: {$lte: time, $gte: endDate}, type_id}
+        };
+        pg = await this.databaseMacVod.findAll(query);
+        result = {
+            msg : "获取成功",
+            code : "000000",
+            data : pg
+        }
+        return result
+    }
+
+    /**
+     * 获取视频分类推荐
+     * 以推荐值为媒介,默认为8
+     */
+    async _getVideoRecommend(data){
+        let { ctx , app } = this;
+        let result , query , pg;
+        let { type_id ,  vod_level , limit , page} = data;
+        vod_level = vod_level || 8
+        limit = limit || 8
+        page = page || 1;
+        query = {
+            limit: limit,
+            offset: page * limit - limit,
+            where: {vod_level, type_id}
+        };
+        pg = await this.databaseMacVod.findAll(query);
+        result = {
+            msg : "获取成功",
+            code : "000000",
+            data : pg
+        }
+        return result
     }
 }
 
