@@ -67,6 +67,13 @@ module.exports = app => {
   router.post('/fav/addFav',controller.fav.addFav);
   router.post('/fav/removeFav',controller.fav.removeFav);
   router.post('/fav/getFavList',controller.fav.getFavList);
+
+  //notice
   router.post('/notice/getNotice',controller.notice.getNotice);
+
+  //fl
+  router.post('/fl/getFlList',controller.fl.getFlList);
+  router.post('/zt/getZtList',controller.zt.getZtList);
+  router.post('/zt/getZtInfo',controller.zt.getZtInfo);
 
 };
