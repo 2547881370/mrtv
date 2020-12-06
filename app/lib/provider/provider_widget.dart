@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 ///
 /// 方便数据初始化
 /// 另外发现进一步封装,都是使用了Consumer来进行包裹, 那么这总控制会更加颗粒化的去build
+/// 每次都会重新实例化一次
 class ProviderWidget<T extends ChangeNotifier> extends StatefulWidget {
   final ValueWidgetBuilder<T> builder;
   final T model;
