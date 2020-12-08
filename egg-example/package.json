@@ -43,7 +43,7 @@
     "lint": "eslint .",
     "ci": "npm run lint && npm run cov",
     "autod": "autod",
-    "dbload": "egg-sequelize-auto -o ./app/model -h 139.9.114.198 -p 3306 -d tv -u root -x 123456"
+    "dbload": "egg-sequelize-auto -o ./app/model -h 117.50.17.60 -p 3306 -d tv -u root -x 123456"
   },
   "ci": {
     "version": "10"
