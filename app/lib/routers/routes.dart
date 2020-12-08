@@ -8,6 +8,7 @@ class Routes {
   static String normalPage = '/normalPage';
   static String routingReference = '/routingReference';
   static String login = '/login';
+  static String searchPage = '/searchPage';
   static void configureRoutes(Router router) {
     router.notFoundHandler = new Handler(
       handlerFunc: (BuildContext context, Map<String, List<String>> params) {
@@ -21,5 +22,6 @@ class Routes {
     router.define(normalPage, handler: normalPageHanderl);
     router.define(routingReference, handler: routingReferenceHanderl);
     router.define(login, handler: loginHanderl);
+    router.define(searchPage, handler: searchPageHanderl);
   }
 }

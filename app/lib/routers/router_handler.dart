@@ -1,3 +1,4 @@
+import 'package:app/screens/page/search/search_page.dart';
 import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 
@@ -31,5 +32,12 @@ Handler routingReferenceHanderl = Handler(
 Handler loginHanderl = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       // return Login();
+    }
+);
+
+// 搜索页面
+Handler searchPageHanderl = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+      return SearchPage();
     }
 );
