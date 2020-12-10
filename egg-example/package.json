@@ -33,8 +33,8 @@
     "node": ">=10.0.0"
   },
   "scripts": {
-    "start": "egg-scripts start --daemon --title=egg-server-servermysql",
-    "stop": "egg-scripts stop --title=egg-server-servermysql",
+    "start": "egg-scripts start --port=7001 --daemon --title=egg-manage --ignore-stderr",
+    "stop": "egg-scripts stop --title=egg-manage",
     "dev": "egg-bin dev",
     "debug": "egg-bin debug",
     "test": "npm run lint -- --fix && npm run test-local",
