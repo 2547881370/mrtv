@@ -124,8 +124,7 @@ class _HomePageState extends State<HomePage>
                 ),
               ),
             ])),
-        Container(
-            height: 150, color: Color(0xff916BF0), child: _buildTableBarView())
+        Expanded(child: _buildTableBarView())
       ],
     ));
   }
