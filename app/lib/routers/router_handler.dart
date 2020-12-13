@@ -1,3 +1,4 @@
+import 'package:app/screens/page/loginPage/login_page.dart';
 import 'package:app/screens/page/search/search_page.dart';
 import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
@@ -31,7 +32,7 @@ Handler routingReferenceHanderl = Handler(
 // 登陆页面
 Handler loginHanderl = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      // return Login();
+      return LoginPage();
     }
 );
 

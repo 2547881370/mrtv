@@ -46,9 +46,11 @@ class _SearchPageState extends State<SearchPage> {
             ],
           ),
         ),
-       value.length > 0 ? Expanded(
-          child: AssociationList(),
-        ) : Container(),
+        value.length > 0
+            ? Expanded(
+                child: AssociationList(),
+              )
+            : Container(),
       ],
     ))));
   }

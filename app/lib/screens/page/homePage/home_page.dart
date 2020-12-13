@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage>
               TextStyle(fontWeight: FontWeight.w100, color: Colors.white),
           tabs: tabs
               .map((e) => Container(
-                  padding: EdgeInsets.symmetric(vertical: 10),
+                  // padding: EdgeInsets.symmetric(vertical: 10),
                   decoration: BoxDecoration(),
                   child: Text(e,
                       style: TextStyle(
@@ -72,13 +72,15 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
+    final double topPadding =
+        MediaQuery.of(context).padding.top + kDefaultPaddin + 15;
     return BackgroundComponent(
         child: Column(
       children: <Widget>[
         Container(
           width: double.infinity,
           height: ScreenUtil().setHeight(80),
-          margin: EdgeInsets.only(top: 30),
+          margin: EdgeInsets.only(top: topPadding),
           padding: EdgeInsets.symmetric(horizontal: kDefaultPaddin),
           child: _buildAppBar(),
         ),

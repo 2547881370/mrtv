@@ -1,4 +1,5 @@
 import 'package:app/view_model/home_model.dart';
+import 'package:app/view_model/login_model.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 import "package:app/view_model/test_model.dart";
@@ -19,6 +20,9 @@ List<SingleChildWidget> independentServices = [
   ),
   ChangeNotifierProvider<HomeModel>(
     create: (context) => HomeModel(),
+  ),
+  ChangeNotifierProvider<LoginModel>(
+    create: (context) => LoginModel(),
   ),
 //  ChangeNotifierProvider<LocaleModel>(
 //    create: (context) => LocaleModel(),
