@@ -18,7 +18,7 @@ class UserController extends Controller {
     const ctx = this.ctx;
     const user = await ctx.service.user._addUser({...ctx.request.body});
     this.JsonBody( {
-      user,
+      ...user,
     })
   }
 

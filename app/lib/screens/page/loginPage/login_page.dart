@@ -1,6 +1,9 @@
+import 'package:app/api/Api.dart';
 import 'package:app/routers/navigator_util.dart';
+import 'package:app/utils/public.dart';
 import 'package:app/view_model/login_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -39,16 +42,52 @@ class LoginPagePositioned extends StatefulWidget {
 }
 
 class _LoginPagePositionedState extends State<LoginPagePositioned> {
+  UserFormData userFromData = UserFormData(user_name: null, user_pwd: null);
+  Map<String, dynamic> testData = Map();
   Map<int, Function> loginModelNameMap = {
     0: ({Function callback}) {
       print("登录");
       callback();
     },
-    1: ({Function callback}) {
+    1: ({Function callback}) async {
       print("注册,请求api");
       callback();
     }
   };
+
+  Future<dynamic> addUserApi(int value) async {
+    dynamic res;
+    if (value == 0) {
+      try {
+        res = await Api.userLoginApi({
+          "user_name": userFromData.user_name,
+          "user_pwd": userFromData.user_pwd,
+        });
+      } catch (err) {
+        print(err);
+      }
+    } else if (value == 1) {
+      try {
+        res = await Api.addUserApi({
+          "user_name": userFromData.user_name,
+          "user_pwd": userFromData.user_pwd,
+          "group_id": 2,
+          "user_nick_name": userFromData.user_name,
+          "user_qq": "",
+          "user_email": "",
+          "user_phone": "",
+          "user_status": 1,
+          "user_question": "",
+          "user_answer": "",
+          "user_points": 1,
+        });
+      } catch (err) {
+        print(err);
+      }
+    }
+    print(res.data.userName );
+    return res;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,17 +125,18 @@ class _LoginPagePositionedState extends State<LoginPagePositioned> {
     );
   }
 
-  Container loginPagePositionedTitle() {
-    return Container(
-        height: ScreenUtil().setHeight(60),
-        child: Center(
-            child: Consumer<LoginModel>(builder: (context, loginModel, child) {
-          return Text(
-              loginModel.loginModelNameMap[loginModel.currentIndex]
-                  .suggestiveLanguage,
-              style: TextStyle(
-                  color: Colors.black54, fontSize: ScreenUtil().setSp(20)));
-        })));
+  Expanded loginPagePositionedTitle() {
+    return Expanded(
+        child: Container(
+            height: ScreenUtil().setHeight(60),
+            child: Center(child:
+                Consumer<LoginModel>(builder: (context, loginModel, child) {
+              return Text(
+                  loginModel.loginModelNameMap[loginModel.currentIndex]
+                      .suggestiveLanguage,
+                  style: TextStyle(
+                      color: Colors.black54, fontSize: ScreenUtil().setSp(20)));
+            }))));
   }
 
   Container loginPagePositionedInput() {
@@ -115,6 +155,12 @@ class _LoginPagePositionedState extends State<LoginPagePositioned> {
                 alignment: Alignment.center,
                 child: TextField(
                   style: TextStyle(color: Colors.black),
+                  inputFormatters: [
+                    WhitelistingTextInputFormatter(RegExp("^[0-9]{0,11}")),
+                  ],
+                  onChanged: (val) {
+                    userFromData.user_name = val;
+                  },
                   showCursor: true,
                   cursorWidth: 2,
                   cursorRadius: Radius.circular(10),
@@ -138,6 +184,9 @@ class _LoginPagePositionedState extends State<LoginPagePositioned> {
                     borderRadius: BorderRadius.all(Radius.circular(10))),
                 alignment: Alignment.center,
                 child: TextField(
+                  onChanged: (val) {
+                    userFromData.user_pwd = generate_MD5(val);
+                  },
                   obscureText: true,
                   style: TextStyle(color: Colors.black),
                   showCursor: true,
@@ -174,10 +223,12 @@ class _LoginPagePositionedState extends State<LoginPagePositioned> {
                   style: TextStyle(fontSize: ScreenUtil().setSp(30))),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10))),
-              onPressed: () =>
-                  loginModelNameMap[loginModel.currentIndex](callback: () {
+              onPressed: () => loginModelNameMap[loginModel.currentIndex](
+                      callback: () async {
+                    addUserApi(loginModel.currentIndex);
+                    loginModel.setLoginOnButton(
+                        DateTime.now().millisecondsSinceEpoch);
                     loginModel.setLoginCurrentIndex(0);
-                    loginModel.setState(0);
                   }));
         }));
   }
@@ -256,33 +307,32 @@ class _CustomTabBarState extends State<CustomTabBar>
   @override
   Widget build(BuildContext context) {
     print("build");
-    return Selector<LoginModel,int>(
-      selector: (context, value) => value.state,
-      builder: (context, loginModel, child) {
-      // _tabController.index = 0;
-      print("132123");
-      return TabBar(
-        onTap: (tab) {
-          // loginModel.setLoginCurrentIndex(tab);
-          context.read<LoginModel>().setLoginCurrentIndex(tab);
-        },
-        isScrollable: true,
-        indicatorSize: TabBarIndicatorSize.label,
-        labelStyle: TextStyle(
-            fontSize: ScreenUtil().setSp(35), fontWeight: FontWeight.bold),
-        controller: _tabController,
-        labelColor: Colors.orange,
-        indicatorWeight: 3,
-        indicatorPadding: EdgeInsets.symmetric(horizontal: 10),
-        unselectedLabelColor: Colors.black,
-        indicatorColor: Colors.orangeAccent,
-        tabs: tabs
-            .map((e) => Container(
-                  width: ScreenUtil().setWidth(240),
-                  child: Tab(text: e),
-                ))
-            .toList(),
-      );
-    });
+    return Selector<LoginModel, int>(
+        selector: (context, value) => value.time_day,
+        builder: (context, loginModel, child) {
+          _tabController.index = 0;
+          return TabBar(
+            onTap: (tab) {
+              // loginModel.setLoginCurrentIndex(tab);
+              context.read<LoginModel>().setLoginCurrentIndex(tab);
+            },
+            isScrollable: true,
+            indicatorSize: TabBarIndicatorSize.label,
+            labelStyle: TextStyle(
+                fontSize: ScreenUtil().setSp(35), fontWeight: FontWeight.bold),
+            controller: _tabController,
+            labelColor: Colors.orange,
+            indicatorWeight: 3,
+            indicatorPadding: EdgeInsets.symmetric(horizontal: 10),
+            unselectedLabelColor: Colors.black,
+            indicatorColor: Colors.orangeAccent,
+            tabs: tabs
+                .map((e) => Container(
+                      width: ScreenUtil().setWidth(240),
+                      child: Tab(text: e),
+                    ))
+                .toList(),
+          );
+        });
   }
 }

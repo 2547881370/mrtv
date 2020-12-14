@@ -37,6 +37,7 @@ dependencies:
   flutter_screenutil: ^4.0.0-beta
   url_launcher: ^5.2.7
   flutter_svg: 0.17.3+1
+  shared_preferences: ^0.5.1
 
 dev_dependencies:
   flutter_test:

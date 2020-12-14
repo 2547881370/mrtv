@@ -4,8 +4,6 @@ import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
-
-
 class BottomNavBar extends StatefulWidget {
   BottomNavBar({
     Key key,
@@ -15,13 +13,12 @@ class BottomNavBar extends StatefulWidget {
 }
 
 class _BottomNavBarState extends State<BottomNavBar> {
-
   @override
   Widget build(BuildContext context) {
     print("重新build");
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 35),
-      height: ScreenUtil().setHeight(100),
+      height: ScreenUtil().setHeight(110),
       width: double.infinity,
       // double.infinity means it cove the available width
       decoration: BoxDecoration(
@@ -45,14 +42,28 @@ class _BottomNavBarState extends State<BottomNavBar> {
             print(b.toString());
             return Column(children: <Widget>[
               IconButton(
-                icon: b.index == homeModel.currentIndex ? SvgPicture.asset(b.activeIcon,width:ScreenUtil().setWidth(45)) : SvgPicture.asset(b.icon,width:ScreenUtil().setWidth(45)),
+                icon: b.index == homeModel.currentIndex
+                    ? SvgPicture.asset(b.activeIcon,
+                        width: ScreenUtil().setWidth(45))
+                    : SvgPicture.asset(b.icon,
+                        width: ScreenUtil().setWidth(45)),
                 splashColor: Colors.transparent,
                 highlightColor: Colors.transparent,
                 onPressed: () {
                   homeModel.setCurrentIndex(b.index);
                 },
               ),
-              Text(b.title,style : TextStyle(color : b.index == homeModel.currentIndex ?  Colors.orange : Colors.black,fontSize :ScreenUtil().setSp(18)))
+              InkWell(
+                onTap: () {
+                  homeModel.setCurrentIndex(b.index);
+                },
+                child: Text(b.title,
+                    style: TextStyle(
+                        color: b.index == homeModel.currentIndex
+                            ? Colors.orange
+                            : Colors.black,
+                        fontSize: ScreenUtil().setSp(18))),
+              )
             ]);
           }).toList(),
         );

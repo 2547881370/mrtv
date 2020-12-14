@@ -10,9 +10,15 @@ class LoginModelName {
   LoginModelName({this.buttonName, this.suggestiveLanguage, this.fn});
 }
 
+class UserFormData {
+  String user_name;
+  String user_pwd;
+  UserFormData({this.user_name, this.user_pwd});
+}
+
 class LoginModel extends ChangeNotifier {
   int currentIndex = 0; // 当前激活的tab索引值
-  int state = 0;
+  int time_day = 0;
   Map<int, LoginModelName> loginModelNameMap = {
     0: LoginModelName(
         buttonName: "登录",
@@ -34,8 +40,8 @@ class LoginModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  setState(int val) {
-    state = val;
+  setLoginOnButton(int value) {
+    time_day = value;
     notifyListeners();
   }
 }

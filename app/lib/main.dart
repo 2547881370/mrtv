@@ -91,7 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String src = "1321232131";
 
   void _testRequest() async {
-    final res = await Api.UserLoginApi(
+    final res = await Api.userLoginApi(
         {"user_name": "lalalal2414214", "user_pwd": "12312414124"});
     this.setState(() {
       src = "姓名" +
