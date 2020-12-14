@@ -16,10 +16,8 @@ class UserController extends Controller {
    */
   async addUser() {
     const ctx = this.ctx;
-    const user = await ctx.service.user._addUser({...ctx.request.body});
-    this.JsonBody( {
-      ...user,
-    })
+    const user = await ctx.service.user._addUser({ ...ctx.request.body });
+    this.JsonBody(user)
   }
 
   /**
@@ -32,18 +30,18 @@ class UserController extends Controller {
   async login() {
     const { ctx, app } = this;
     const data = ctx.request.body;
-    const user = await ctx.service.user._login({...data});
+    const user = await ctx.service.user._login({ ...data });
     const token = app.jwt.sign({
       user_name: data.user_name,
     }, app.config.jwt.secret);
-    if(user.data){
+    if (user.data) {
       user.data.token = token;
       app.redis.set(data.user_name, token);
-      this.JsonBody( {
+      this.JsonBody({
         ...user,
       })
-    }else{
-      this.JsonBody( {
+    } else {
+      this.JsonBody({
         ...user,
       })
     }
@@ -59,21 +57,21 @@ class UserController extends Controller {
    * @request header string *token
    * @response 200 baseResponse 修改成功
    */
-  async setuserInfo(){
+  async setuserInfo() {
     const { ctx, app } = this;
     const data = ctx.request.body;
-    const user = await ctx.service.user._setuserInfo({...data});
-    if(user.updateSuccess == 1){
+    const user = await ctx.service.user._setuserInfo({ ...data });
+    if (user.updateSuccess == 1) {
       this.JsonBody({
-        msg : "修改成功",
-        code : "000000",
-        data : user.data
+        msg: "修改成功",
+        code: "000000",
+        data: user.data
       })
-    }else{
+    } else {
       this.JsonBody({
-        msg : "修改失败",
-        code : "500",
-        data : null
+        msg: "修改失败",
+        code: "500",
+        data: null
       })
     }
   }
@@ -82,7 +80,7 @@ class UserController extends Controller {
   /*
    * 对返回的数据结果进行封装。
    */
-  JsonBody (data) {
+  JsonBody(data) {
     let { ctx } = this;
     ctx.helper.JsonBody(data)
   }
