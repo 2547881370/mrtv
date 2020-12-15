@@ -1,7 +1,14 @@
+import 'dart:convert';
+
 import 'package:app/api/Api.dart';
+import 'package:app/api/EntityFactory.dart';
+import 'package:app/components/toast/Toast_postion.dart';
+import 'package:app/model/add_user.dart';
 import 'package:app/routers/navigator_util.dart';
+import 'package:app/utils/dataPersistence.dart';
 import 'package:app/utils/public.dart';
 import 'package:app/view_model/login_model.dart';
+import 'package:app/view_model/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/screenutil.dart';
@@ -59,35 +66,44 @@ class _LoginPagePositionedState extends State<LoginPagePositioned> {
     dynamic res;
     if (value == 0) {
       try {
-        res = await Api.userLoginApi({
-          "user_name": userFromData.user_name,
-          "user_pwd": userFromData.user_pwd,
-        });
+        res = await Api.userLoginApi(_userLoginApi());
       } catch (err) {
         print(err);
       }
     } else if (value == 1) {
       try {
-        res = await Api.addUserApi({
-          "user_name": userFromData.user_name,
-          "user_pwd": userFromData.user_pwd,
-          "group_id": 2,
-          "user_nick_name": userFromData.user_name,
-          "user_qq": "",
-          "user_email": "",
-          "user_phone": "",
-          "user_status": 1,
-          "user_question": "",
-          "user_answer": "",
-          "user_points": 1,
-        });
+        res = await Api.addUserApi(_addUserApi());
       } catch (err) {
         print(err);
       }
     }
-    print(res.data.userName );
     return res;
   }
+
+  Map<String, dynamic> _userLoginApi() {
+    return {
+      "user_name": userFromData.user_name,
+      "user_pwd": userFromData.user_pwd,
+    };
+  }
+
+  Map<String, dynamic> _addUserApi() {
+    return {
+      "user_name": userFromData.user_name,
+      "user_pwd": userFromData.user_pwd,
+      "group_id": 2,
+      "user_nick_name": userFromData.user_name,
+      "user_qq": "",
+      "user_email": "",
+      "user_phone": "",
+      "user_status": 1,
+      "user_question": "",
+      "user_answer": "",
+      "user_points": 1,
+    };
+  }
+
+  PersistentStorage ps = PersistentStorage();
 
   @override
   Widget build(BuildContext context) {
@@ -225,10 +241,47 @@ class _LoginPagePositionedState extends State<LoginPagePositioned> {
                   borderRadius: BorderRadius.all(Radius.circular(10))),
               onPressed: () => loginModelNameMap[loginModel.currentIndex](
                       callback: () async {
-                    addUserApi(loginModel.currentIndex);
-                    loginModel.setLoginOnButton(
-                        DateTime.now().millisecondsSinceEpoch);
-                    loginModel.setLoginCurrentIndex(0);
+                    addUserApi(loginModel.currentIndex).then( (value) async {
+                      if (value == null) {
+                        if (loginModel.currentIndex == 0) {
+                          Toast.toast(context,
+                              msg: "账号或密码错误",
+                              position: ToastPostion.bottom,
+                              bgColor: Colors.red,
+                              textColor: Colors.white);
+                        } else {
+                          Toast.toast(context,
+                              msg: "用户名已被注册",
+                              position: ToastPostion.bottom,
+                              bgColor: Colors.red,
+                              textColor: Colors.white);
+                        }
+                        return;
+                      }
+                      if (loginModel.currentIndex == 0) {
+                        Toast.toast(
+                          context,
+                          msg: "登录成功",
+                          position: ToastPostion.bottom,
+                        );
+                        // value是序列化后的对象
+                        ps.setStorage('userInfo',JsonEncoder().convert(value));  
+                        // 存入本地持久化,需要转为map对象
+                        var p = await ps.getStorage('userInfo');
+                        // print(p["data"]["user_name"]);
+                        Provider.of<UserInfoModel>(context, listen: false).getUser_name(p);
+                        NavigatorUtil.goBack(context);
+                      } else {
+                        Toast.toast(
+                          context,
+                          msg: "注册成功,请登录",
+                          position: ToastPostion.bottom,
+                        );
+                      }
+                      loginModel.setLoginOnButton(
+                          DateTime.now().millisecondsSinceEpoch);
+                      loginModel.setLoginCurrentIndex(0);
+                    });
                   }));
         }));
   }
@@ -299,7 +352,6 @@ class _CustomTabBarState extends State<CustomTabBar>
 
   @override
   void dispose() {
-    print("dispose");
     _tabController.dispose();
     super.dispose();
   }

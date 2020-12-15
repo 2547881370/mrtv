@@ -1,8 +1,12 @@
 import 'package:app/routers/navigator_util.dart';
+import 'package:app/utils/dataPersistence.dart';
+import 'package:app/utils/isLogin.dart';
+import 'package:app/view_model/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:app/components/home/background_component.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 
@@ -16,6 +20,7 @@ class MyPage extends StatefulWidget {
 class _MyPageState extends State<MyPage> {
   @override
   Widget build(BuildContext context) {
+    Provider.of<UserInfoModel>(context, listen: false).initUser_name();
     final double topPadding =
         MediaQuery.of(context).padding.top + kDefaultPaddin + 15;
     return Scaffold(
@@ -405,7 +410,7 @@ class MyPageButton extends StatelessWidget {
         margin: EdgeInsets.only(right: ScreenUtil().setWidth(20)),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(10)),
-            color: Colors.deepOrangeAccent.withOpacity(0.8)),
+            color: Colors.white.withOpacity(0.3)),
         alignment: Alignment.center,
         child: InkWell(
             onTap: fn,
@@ -431,7 +436,10 @@ class MyPageShowUserInfo extends StatelessWidget {
       height: ScreenUtil().setHeight(167),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [myPageShowUserInfoImg(context : context), myPageShowUserInfoSignIn()],
+        children: [
+          myPageShowUserInfoImg(context: context),
+          myPageShowUserInfoSignIn()
+        ],
       ),
     );
   }
@@ -475,10 +483,11 @@ class MyPageShowUserInfo extends StatelessWidget {
   InkWell myPageShowUserInfoImg({BuildContext context}) {
     return InkWell(
         onTap: () {
-          NavigatorUtil.jump(context, '/login');
+          isLogin(context, () {
+            print("跳转用户详情页");
+          });
         },
         child: Container(
-          width: ScreenUtil().setWidth(320),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -505,14 +514,49 @@ class MyPageShowUserInfo extends StatelessWidget {
               ),
               Container(
                 alignment: Alignment.center,
-                child: Text("登录 | 注册",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: ScreenUtil().setSp(35),
-                        fontWeight: FontWeight.bold)),
+                child: Consumer<UserInfoModel>(
+                    builder: (context, userInfoModel, child) {
+                  var userName = userInfoModel.userInfo?.data?.userName;
+                  var groupId = userInfoModel.userInfo?.data?.groupId;
+                  //userName != null ?  userName : "登录 | 注册"
+                  return userName != null
+                      ? successUserName(userName: userName, groupId: groupId)
+                      : unknownUserName();
+                }),
               )
             ],
           ),
+        ));
+  }
+
+  Container unknownUserName() {
+    return Container(
+      margin: EdgeInsets.only(left: 10),
+      child:Text("登录 | 注册",
+        style: TextStyle(
+            color: Colors.white,
+            fontSize: ScreenUtil().setSp(35),
+            fontWeight: FontWeight.bold)));
+  }
+
+  Container successUserName({String userName, int groupId}) {
+    return Container(
+        margin: EdgeInsets.only(left: 10),
+        alignment: Alignment.center,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+                margin: EdgeInsets.only(bottom: 10),
+                child: Text("${groupIdMap[groupId]}: 极速TV${userName}",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: ScreenUtil().setSp(26)))),
+            Text("签到,评论,分享,评论可获得积分",
+                style: TextStyle(
+                    color: Colors.white, fontSize: ScreenUtil().setSp(20)))
+          ],
         ));
   }
 }

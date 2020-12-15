@@ -1,3 +1,4 @@
+import 'package:app/utils/isLogin.dart';
 import 'package:dio/dio.dart';
 import "package:app/api/BaseEntity.dart";
 import "package:app/api/BaseListEntity.dart";
@@ -33,9 +34,12 @@ class DioManager {
   // params：请求参数
   // success：请求成功回调
   // error：请求失败回调
-  Future request<T>(NWMethod method, String path, {Map params, Function(T) success, Function(ErrorEntity) error}) async {
+  Future request<T>(NWMethod method, String path,
+      {Map params, Function(T) success, Function(ErrorEntity) error}) async {
     try {
-      Response response = await dio.request(path, data: params, options: Options(method: NWMethodValues[method]));
+      dio.options.headers['token'] = await getToken();
+      Response response = await dio.request(path,
+          data: params, options: Options(method: NWMethodValues[method]));
       if (response != null) {
         BaseEntity entity = BaseEntity<T>.fromJson(response.data);
         if (entity.code == "000000") {
@@ -47,7 +51,7 @@ class DioManager {
       } else {
         error(ErrorEntity(code: "-1", message: "未知错误"));
       }
-    } on DioError catch(e) {
+    } on DioError catch (e) {
       error(createErrorEntity(e));
     }
   }
@@ -58,9 +62,13 @@ class DioManager {
   // params：请求参数
   // success：请求成功回调
   // error：请求失败回调
-  Future requestList<T>(NWMethod method, String path, {Map params, Function(List<T>) success, Function(ErrorEntity) error}) async {
+  Future requestList<T>(NWMethod method, String path,
+      {Map params,
+      Function(List<T>) success,
+      Function(ErrorEntity) error}) async {
     try {
-      Response response = await dio.request(path, data: params, options: Options(method: NWMethodValues[method]));
+      Response response = await dio.request(path,
+          data: params, options: Options(method: NWMethodValues[method]));
       if (response != null) {
         BaseListEntity entity = BaseListEntity<T>.fromJson(response.data);
         if (entity.code == 0) {
@@ -71,7 +79,7 @@ class DioManager {
       } else {
         error(ErrorEntity(code: "-1", message: "未知错误"));
       }
-    } on DioError catch(e) {
+    } on DioError catch (e) {
       error(createErrorEntity(e));
     }
   }
@@ -79,27 +87,32 @@ class DioManager {
   // 错误信息
   ErrorEntity createErrorEntity(DioError error) {
     switch (error.type) {
-      case DioErrorType.CANCEL:{
-        return ErrorEntity(code:" -1", message: "请求取消");
-      }
-      break;
-      case DioErrorType.CONNECT_TIMEOUT:{
-        return ErrorEntity(code: "-1", message: "连接超时");
-      }
-      break;
-      case DioErrorType.SEND_TIMEOUT:{
-        return ErrorEntity(code: "-1", message: "请求超时");
-      }
-      break;
-      case DioErrorType.RECEIVE_TIMEOUT:{
-        return ErrorEntity(code: "-1", message: "响应超时");
-      }
-      break;
-      case DioErrorType.RESPONSE:{
-        try {
-          int errCode = error.response.statusCode;
-          String errMsg = error.response.statusMessage;
-          return ErrorEntity(code: "$errCode", message: errMsg);
+      case DioErrorType.CANCEL:
+        {
+          return ErrorEntity(code: " -1", message: "请求取消");
+        }
+        break;
+      case DioErrorType.CONNECT_TIMEOUT:
+        {
+          return ErrorEntity(code: "-1", message: "连接超时");
+        }
+        break;
+      case DioErrorType.SEND_TIMEOUT:
+        {
+          return ErrorEntity(code: "-1", message: "请求超时");
+        }
+        break;
+      case DioErrorType.RECEIVE_TIMEOUT:
+        {
+          return ErrorEntity(code: "-1", message: "响应超时");
+        }
+        break;
+      case DioErrorType.RESPONSE:
+        {
+          try {
+            int errCode = error.response.statusCode;
+            String errMsg = error.response.statusMessage;
+            return ErrorEntity(code: "$errCode", message: errMsg);
 //          switch (errCode) {
 //            case 400: {
 //              return ErrorEntity(code: errCode, message: "请求语法错误");
@@ -137,14 +150,15 @@ class DioManager {
 //              return ErrorEntity(code: errCode, message: "未知错误");
 //            }
 //          }
-        } on Exception catch(_) {
-          return ErrorEntity(code: "-1", message: "未知错误");
+          } on Exception catch (_) {
+            return ErrorEntity(code: "-1", message: "未知错误");
+          }
         }
-      }
-      break;
-      default: {
-        return ErrorEntity(code:" -1", message: error.message);
-      }
+        break;
+      default:
+        {
+          return ErrorEntity(code: " -1", message: error.message);
+        }
     }
   }
 }
