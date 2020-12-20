@@ -162,6 +162,22 @@ module.exports = app => {
     user_end_level_time: {
       type: DataTypes.DATE,
       allowNull: true
+    },
+    user_video_age: {
+      type: DataTypes.INTEGER(255),
+      allowNull: true
+    },
+    user_video_level: {
+      type: DataTypes.INTEGER(255),
+      allowNull: true
+    },
+    user_video_level_name: {
+      type: DataTypes.STRING(255),
+      allowNull: true
+    },
+    user_video_day_age: {
+      type: DataTypes.INTEGER(255),
+      allowNull: true
     }
   }, {
     tableName: 'mac_user'

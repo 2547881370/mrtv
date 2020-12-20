@@ -1,5 +1,3 @@
-import 'package:app/routers/navigator_util.dart';
-import 'package:app/utils/dataPersistence.dart';
 import 'package:app/utils/isLogin.dart';
 import 'package:app/view_model/user_model.dart';
 import 'package:flutter/material.dart';

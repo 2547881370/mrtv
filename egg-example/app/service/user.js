@@ -1,5 +1,6 @@
 const Service = require('egg').Service;
 const TABLE_NAME = 'mac_user';
+const userEnmu = require('../enums/user').user_video_level;
 
 class UserService extends Service {
   constructor(ctx) {
@@ -30,6 +31,10 @@ class UserService extends Service {
     if (user && Object.keys(user).length > 0) {
       return { msg: '用户已存在,请重新输入', code: '502', data: null };
     } else {
+      let user_video_age = userEnmu["1"].videoAge;
+      let user_video_level = userEnmu["1"].level;
+      let user_video_level_name = userEnmu["1"].name;
+      let user_video_day_age = userEnmu["1"].videoAge;
       const result = await this.app.mysql.insert(TABLE_NAME, {
         user_name, // 账号名称 *
         user_pwd, // 用户密码 *
@@ -42,6 +47,10 @@ class UserService extends Service {
         user_question, // 用户问题
         user_answer, // 用户答案
         user_points, // 用户积分
+        user_video_age,//用户观看次数
+        user_video_level,//用户vip等级,直接与每日观看次数强关联
+        user_video_level_name,//用户vip等级翻译
+        user_video_day_age,//用户今日剩余观看次数
       });
       if (result.affectedRows === 1) {
         const user = await this.app.mysql.get(TABLE_NAME, { user_name });

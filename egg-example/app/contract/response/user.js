@@ -14,6 +14,10 @@ module.exports = {
     user_question: { type: 'string',  description: '用户修改密码问题'  },
     user_answer: { type: 'string',  description: '用户修改密码答案'  },
     user_points: { type: 'string',  description: '用户积分'  },
+    user_video_age: { type: 'number',  description: '用户每日可观看次数'  },
+    user_video_level: { type: 'number',  description: '用户vip等级,直接与每日观看次数强关联'  },
+    user_video_level_name: { type: 'string',  description: '用户vip等级翻译'  },
+    user_video_day_age: { type: 'number',  description: '用户今日剩余观看次数'  },
     token: { type: 'string',  description: 'token'  },
   },
 }
