@@ -26,22 +26,33 @@ class Fraction {
 class UserInfoModel extends ChangeNotifier {
   UserLogin userInfo;
   Fraction fraction =
-      Fraction(user_points: "0", user_video_day_age: "0", gold_coin: "100");
+      Fraction(user_points: "0", user_video_day_age: "0", gold_coin: "0");
 
   getUser_name(Map value) {
     userInfo = EntityFactory.generateOBJ<UserLogin>(value);
     print(userInfo);
+    setFraction();
     notifyListeners();
   }
 
   initUser_name() async {
     PersistentStorage ps = PersistentStorage();
     var p = await ps.getStorage('userInfo');
+    if (p == null) {
+      userInfo = null;
+      return false;
+    }
     userInfo = EntityFactory.generateOBJ<UserLogin>(p);
     notifyListeners();
   }
 
- Future setFraction() async {
+  removeUserData() {
+    userInfo = null;
+    fraction = Fraction(user_points: "0", user_video_day_age: "0", gold_coin: "0");
+    notifyListeners();
+  }
+
+  Future setFraction() async {
     // TODO : 获取用户信息接口
     UserLogin _userInfo = await Api.getUserInfo({});
     PersistentStorage ps = PersistentStorage();

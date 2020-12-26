@@ -457,15 +457,17 @@ class MyPageShowUserInfo extends StatelessWidget {
     return Expanded(
       child: InkWell(
           onTap: () {
-            var now = new DateTime.now();
-            var formatter = new DateFormat('yyyy-MM-dd');
-            String formatted = formatter.format(now);
-            Api.addSingin({"mask": formatted}).then((val) {
-              Toast.toast(
-                context,
-                msg: val.msg,
-                position: ToastPostion.bottom,
-              );
+            isLogin(context, () {
+              var now = new DateTime.now();
+              var formatter = new DateFormat('yyyy-MM-dd');
+              String formatted = formatter.format(now);
+              Api.addSingin({"mask": formatted}).then((val) {
+                Toast.toast(
+                  context,
+                  msg: val.msg,
+                  position: ToastPostion.bottom,
+                );
+              });
             });
           },
           child: Stack(
@@ -538,7 +540,10 @@ class MyPageShowUserInfo extends StatelessWidget {
                       ? SvgPicture.asset(
                           "assets/icons/tx1.svg",
                         )
-                      : Image.network(NWApi.baseApi + userPortrait , fit: BoxFit.cover,);
+                      : Image.network(
+                          NWApi.baseApi + userPortrait,
+                          fit: BoxFit.cover,
+                        );
                 }),
               ),
               Container(

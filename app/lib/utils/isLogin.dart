@@ -1,4 +1,5 @@
 import 'package:app/api/EntityFactory.dart';
+import 'package:app/components/toast/Toast_postion.dart';
 import 'package:app/model/user_login.dart';
 import 'package:app/routers/navigator_util.dart';
 import 'package:flutter/material.dart';
@@ -18,5 +19,10 @@ Future isLogin(BuildContext context ,Function callback) async{
   callback();
   }else{
     NavigatorUtil.jump(context, '/login');
+    Toast.toast(
+      context,
+      msg: "请先登录",
+      position: ToastPostion.bottom,
+    );
   }
 }

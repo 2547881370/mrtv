@@ -78,7 +78,7 @@ class _MyUserInfoState extends State<MyUserInfo> {
     await ps.clear();
     // 路由跳转我的页面
     NavigatorUtil.goToHomeRemovePage(context);
-    Provider.of<UserInfoModel>(context, listen: false).initUser_name();
+    Provider.of<UserInfoModel>(context, listen: false).removeUserData();
   }
 
   void upDateUserName() {
