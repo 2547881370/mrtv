@@ -19,6 +19,7 @@ class UserFormData {
 class LoginModel extends ChangeNotifier {
   int currentIndex = 0; // 当前激活的tab索引值
   int time_day = 0;
+  
   Map<int, LoginModelName> loginModelNameMap = {
     0: LoginModelName(
         buttonName: "登录",

@@ -12,6 +12,7 @@ module.exports = app => {
   router.post('/user/addUser', controller.user.addUser);
   router.post('/user/login',  controller.user.login);
   router.post('/user/setuserInfo',  controller.user.setuserInfo);
+  router.post('/user/getUserInfo',  controller.user.getUserInfo);
 
   //upload
   router.post('/upload',controller.upload.saveAvatar);

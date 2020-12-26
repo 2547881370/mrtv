@@ -1,3 +1,7 @@
+import 'package:app/api/Api.dart';
+import 'package:app/api/baseApi.dart';
+import 'package:app/components/toast/Toast_postion.dart';
+import 'package:app/routers/navigator_util.dart';
 import 'package:app/utils/isLogin.dart';
 import 'package:app/view_model/user_model.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +11,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import 'package:intl/intl.dart';
 
 class MyPage extends StatefulWidget {
   MyPage({Key key}) : super(key: key);
@@ -234,7 +239,7 @@ class MyPageListTask extends StatelessWidget {
       child: Container(
           margin: EdgeInsets.symmetric(horizontal: kDefaultPaddin),
           width: ScreenUtil().setWidth(650),
-          padding: EdgeInsets.only(top: 25),
+          padding: EdgeInsets.only(top: 15),
           decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -254,30 +259,36 @@ class MyPageListTask extends StatelessWidget {
     );
   }
 
-  Container myPageListTaskPositionedText() {
-    return Container(
-        padding: EdgeInsets.symmetric(horizontal: kDefaultPaddin - 10),
-        margin: EdgeInsets.symmetric(vertical: 5),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text("剩余积分 0",
-                style: TextStyle(
-                    color: Colors.orange,
-                    fontWeight: FontWeight.bold,
-                    fontSize: ScreenUtil().setSp(20))),
-            Text("观影次数 0",
-                style: TextStyle(
-                    color: Colors.orange,
-                    fontWeight: FontWeight.bold,
-                    fontSize: ScreenUtil().setSp(20))),
-            Text("剩余金币 0",
-                style: TextStyle(
-                    color: Colors.orange,
-                    fontWeight: FontWeight.bold,
-                    fontSize: ScreenUtil().setSp(20))),
-          ],
-        ));
+  Widget myPageListTaskPositionedText() {
+    return Selector<UserInfoModel, Fraction>(
+        selector: (context, value) => value.fraction,
+        builder: (context, data, child) {
+          return Container(
+              padding: EdgeInsets.symmetric(horizontal: kDefaultPaddin - 10),
+              margin: EdgeInsets.symmetric(vertical: 5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("剩余积分 ${data.user_points}",
+                      style: TextStyle(
+                          color: Colors.orange,
+                          fontWeight: FontWeight.bold,
+                          fontSize: ScreenUtil().setSp(20))),
+                  Text("观影次数  ${data.user_video_day_age}",
+                      style: TextStyle(
+                          color: Colors.orange,
+                          fontWeight: FontWeight.bold,
+                          fontSize: ScreenUtil().setSp(20))),
+                  Text("剩余金币 ${data.gold_coin}",
+                      style: TextStyle(
+                          color: Colors.orange,
+                          fontWeight: FontWeight.bold,
+                          fontSize: ScreenUtil().setSp(20))),
+                ],
+              ));
+        });
+    ;
+    ;
   }
 
   Row myPageListTaskPositionedIcon() {
@@ -436,45 +447,58 @@ class MyPageShowUserInfo extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           myPageShowUserInfoImg(context: context),
-          myPageShowUserInfoSignIn()
+          myPageShowUserInfoSignIn(context: context)
         ],
       ),
     );
   }
 
-  Expanded myPageShowUserInfoSignIn() {
+  Expanded myPageShowUserInfoSignIn({BuildContext context}) {
     return Expanded(
-      child: Stack(
-        children: [
-          Positioned(
-            right: ScreenUtil().setWidth(kDefaultPaddin),
-            top: ScreenUtil().setHeight(kDefaultPaddin),
-            child: Container(
-              width: ScreenUtil().setWidth(70),
-              height: ScreenUtil().setHeight(70),
-              alignment: Alignment.center,
-              decoration: ShapeDecoration(
-                shadows: [
-                  const BoxShadow(
-                      color: Colors.orangeAccent,
-                      offset: Offset(0, 0),
-                      blurRadius: 2,
-                      spreadRadius: 1),
-                ],
-                shape: CircleBorder(
-                  side: BorderSide(width: 2.0, color: Colors.white),
+      child: InkWell(
+          onTap: () {
+            var now = new DateTime.now();
+            var formatter = new DateFormat('yyyy-MM-dd');
+            String formatted = formatter.format(now);
+            Api.addSingin({"mask": formatted}).then((val) {
+              Toast.toast(
+                context,
+                msg: val.msg,
+                position: ToastPostion.bottom,
+              );
+            });
+          },
+          child: Stack(
+            children: [
+              Positioned(
+                right: ScreenUtil().setWidth(kDefaultPaddin),
+                top: ScreenUtil().setHeight(kDefaultPaddin),
+                child: Container(
+                  width: ScreenUtil().setWidth(70),
+                  height: ScreenUtil().setHeight(70),
+                  alignment: Alignment.center,
+                  decoration: ShapeDecoration(
+                    shadows: [
+                      const BoxShadow(
+                          color: Colors.orangeAccent,
+                          offset: Offset(0, 0),
+                          blurRadius: 2,
+                          spreadRadius: 1),
+                    ],
+                    shape: CircleBorder(
+                      side: BorderSide(width: 2.0, color: Colors.white),
+                    ),
+                    color: Colors.orange.withOpacity(0.6),
+                  ),
+                  child: Text("签到",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: ScreenUtil().setSp(20),
+                          fontWeight: FontWeight.w400)),
                 ),
-                color: Colors.orange.withOpacity(0.6),
-              ),
-              child: Text("签到",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: ScreenUtil().setSp(20),
-                      fontWeight: FontWeight.w400)),
-            ),
-          )
-        ],
-      ),
+              )
+            ],
+          )),
     );
   }
 
@@ -482,6 +506,7 @@ class MyPageShowUserInfo extends StatelessWidget {
     return InkWell(
         onTap: () {
           isLogin(context, () {
+            NavigatorUtil.jump(context, '/myUserInfo');
             print("跳转用户详情页");
           });
         },
@@ -506,15 +531,21 @@ class MyPageShowUserInfo extends StatelessWidget {
                   ),
                   color: Colors.white,
                 ),
-                child: SvgPicture.asset(
-                  "assets/icons/tx1.svg",
-                ),
+                child: Consumer<UserInfoModel>(
+                    builder: (context, userInfoModel, child) {
+                  var userPortrait = userInfoModel.userInfo?.data?.userPortrait;
+                  return userPortrait == null
+                      ? SvgPicture.asset(
+                          "assets/icons/tx1.svg",
+                        )
+                      : Image.network(NWApi.baseApi + userPortrait , fit: BoxFit.cover,);
+                }),
               ),
               Container(
                 alignment: Alignment.center,
                 child: Consumer<UserInfoModel>(
                     builder: (context, userInfoModel, child) {
-                  var userName = userInfoModel.userInfo?.data?.userName;
+                  var userName = userInfoModel.userInfo?.data?.userNickName;
                   var groupId = userInfoModel.userInfo?.data?.groupId;
                   //userName != null ?  userName : "登录 | 注册"
                   return userName != null
@@ -529,12 +560,12 @@ class MyPageShowUserInfo extends StatelessWidget {
 
   Container unknownUserName() {
     return Container(
-      margin: EdgeInsets.only(left: 10),
-      child:Text("登录 | 注册",
-        style: TextStyle(
-            color: Colors.white,
-            fontSize: ScreenUtil().setSp(35),
-            fontWeight: FontWeight.bold)));
+        margin: EdgeInsets.only(left: 10),
+        child: Text("登录 | 注册",
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: ScreenUtil().setSp(35),
+                fontWeight: FontWeight.bold)));
   }
 
   Container successUserName({String userName, int groupId}) {

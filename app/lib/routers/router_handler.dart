@@ -1,4 +1,6 @@
 import 'package:app/screens/page/loginPage/login_page.dart';
+import 'package:app/screens/page/myPage/my_info.dart';
+import 'package:app/screens/page/myPage/my_update_name.dart';
 import 'package:app/screens/page/search/search_page.dart';
 import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
@@ -40,5 +42,19 @@ Handler loginHanderl = Handler(
 Handler searchPageHanderl = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       return SearchPage();
+    }
+);
+
+// 用户详情页
+Handler userInfoPageHanderl = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+      return MyUserInfo();
+    }
+);
+
+// 更改用户昵称页
+Handler userUpDateNamePageHanderl = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+      return MyUpdateName();
     }
 );

@@ -35,7 +35,7 @@ class DioManager {
   // success：请求成功回调
   // error：请求失败回调
   Future request<T>(NWMethod method, String path,
-      {Map params, Function(T) success, Function(ErrorEntity) error}) async {
+      {Map   params, Function(T) success, Function(ErrorEntity) error}) async {
     try {
       dio.options.headers['token'] = await getToken();
       Response response = await dio.request(path,

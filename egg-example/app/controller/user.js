@@ -76,6 +76,21 @@ class UserController extends Controller {
     }
   }
 
+   /**
+   * @summary 获取用户信息
+   * @description 获取用户信息
+   * @router post /user/getUserInfo
+   * @request header string *token
+   * @response 200 createUserRequires ok
+   */
+  async getUserInfo(query){
+    const { ctx } = this;
+    const user = await ctx.service.user._getUserInfo();
+    this.JsonBody({
+      ...user,
+    })
+  }
+
 
   /*
    * 对返回的数据结果进行封装。

@@ -265,8 +265,9 @@ class _LoginPagePositionedState extends State<LoginPagePositioned> {
                           position: ToastPostion.bottom,
                         );
                         // value是序列化后的对象
+                        // 转成json字符串传入
                         ps.setStorage('userInfo',JsonEncoder().convert(value));  
-                        // 存入本地持久化,需要转为map对象
+                        // 存入本地持久化,需要转为map对象,类似于 json.decode(val)
                         var p = await ps.getStorage('userInfo');
                         // print(p["data"]["user_name"]);
                         Provider.of<UserInfoModel>(context, listen: false).getUser_name(p);

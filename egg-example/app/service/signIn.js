@@ -28,7 +28,7 @@ class SignInServer extends Service {
     if (userSingIn && Object.keys(userSingIn).length > 0) {
       let userTime = await app.mysql.get(TABLE_NAME, { user_name: data, date_month });
       if (ctx.helper.isFlagObjectKeys(userTime)) {
-        return { msg: '今天已签到', code: '000000' };
+        return { msg: '今天已签到', code: '000000',data:{} };
       } else {
         var result = await this.app.mysql.insert(TABLE_NAME, {
           user_name: data, // 账号名称 *
@@ -36,9 +36,9 @@ class SignInServer extends Service {
           date_month,//当前系统时间
         });
         if (result.affectedRows === 1) {
-          return { msg: '签到成功', code: '000000' };
+          return { msg: '签到成功', code: '000000',data:{} };
         } else {
-          return { msg: '签到失败', code: '501' };
+          return { msg: '签到失败', code: '000000' ,data:{}};
         }
       }
     } else {
@@ -48,9 +48,9 @@ class SignInServer extends Service {
         date_month,//当前系统时间
       });
       if (result.affectedRows === 1) {
-        return { msg: '签到成功', code: '000000' };
+        return { msg: '签到成功', code: '000000' ,data:{} };
       } else {
-        return { msg: '签到失败', code: '501' };
+        return { msg: '签到失败', code: '000000' ,data:{}};
       }
     }
   }

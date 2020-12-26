@@ -1,3 +1,4 @@
+import 'package:app/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 import './application.dart';
@@ -86,13 +87,13 @@ class NavigatorUtil {
   }
 
   // 跳转到主页面IndexPage并删除当前路由
-  // static void goToHomeRemovePage(BuildContext context) {
-  //   Navigator.of(context).pushAndRemoveUntil(
-  //       MaterialPageRoute(
-  //         builder: (context) => IndexPage(),
-  //       ),
-  //           (route) => route == null);
-  // }
+  static void goToHomeRemovePage(BuildContext context) {
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (context) => Home(),
+        ),
+            (route) => route == null);
+  }
 
   // 跳转到登录页并删除当前路由
   // static void goToLoginRemovePage(BuildContext context) {

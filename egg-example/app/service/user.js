@@ -117,6 +117,20 @@ class UserService extends Service {
     }
   }
 
+  /**
+   * 获取用户详情
+   * @param query
+   * @returns {Promise<void>}
+   * @private
+   */
+  async _getUserInfo(query){
+    const { ctx, app } = this;
+     //获取用户信息
+     let { data } = await ctx.helper.getUserInformation();
+     const user = await this.app.mysql.get(TABLE_NAME, { user_name : data });
+     return { msg: '获取成功', code: '000000', data: user };
+  }
+
 }
 
 module.exports = UserService;

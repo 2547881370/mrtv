@@ -38,14 +38,14 @@ class uploadController extends Controller {
 
     if(Object.keys(files).length > 0){
       this.JsonBody({
-        code: 200,
-        message: '图片上传成功',
+        code: "000000",
+        msg: '图片上传成功',
         data: files
       });
     }else{
       this.JsonBody({
-        code: 500,
-        message: '图片上传失败',
+        code: "406",
+        msg: '图片上传失败',
         data: {}
       });
     }
