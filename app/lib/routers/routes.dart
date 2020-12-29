@@ -11,6 +11,7 @@ class Routes {
   static String searchPage = '/searchPage';
   static String myUserInfo = '/myUserInfo';
   static String myUpdateName = '/myUpdateName';
+  static String myMenmBer = '/myMenmBer';
   static void configureRoutes(Router router) {
     router.notFoundHandler = new Handler(
       handlerFunc: (BuildContext context, Map<String, List<String>> params) {
@@ -27,5 +28,6 @@ class Routes {
     router.define(searchPage, handler: searchPageHanderl);
     router.define(myUserInfo, handler: userInfoPageHanderl);
     router.define(myUpdateName, handler: userUpDateNamePageHanderl);
+    router.define(myMenmBer, handler: myMenmBerPageHanderl);
   }
 }

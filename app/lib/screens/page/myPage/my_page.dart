@@ -395,16 +395,19 @@ class MyPageButton extends StatelessWidget {
           myPageButtonItem(
               title: "在线充值积分",
               fn: () {
+                NavigatorUtil.jump(context, '/myMenmBer');
                 print("在线充值积分");
               }),
           myPageButtonItem(
               title: "卡密充值积分",
               fn: () {
+                NavigatorUtil.jump(context, '/myMenmBer');
                 print("卡密充值积分");
               }),
           myPageButtonItem(
               title: "积分升级会员",
               fn: () {
+                NavigatorUtil.jump(context, '/myMenmBer');
                 print("积分升级会员");
               }),
         ],
@@ -540,10 +543,11 @@ class MyPageShowUserInfo extends StatelessWidget {
                       ? SvgPicture.asset(
                           "assets/icons/tx1.svg",
                         )
-                      : Image.network(
+                      : ClipOval(
+                          child: Image.network(
                           NWApi.baseApi + userPortrait,
                           fit: BoxFit.cover,
-                        );
+                        ));
                 }),
               ),
               Container(
