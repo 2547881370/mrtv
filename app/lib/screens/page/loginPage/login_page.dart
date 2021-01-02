@@ -241,7 +241,7 @@ class _LoginPagePositionedState extends State<LoginPagePositioned> {
                   borderRadius: BorderRadius.all(Radius.circular(10))),
               onPressed: () => loginModelNameMap[loginModel.currentIndex](
                       callback: () async {
-                    addUserApi(loginModel.currentIndex).then( (value) async {
+                    addUserApi(loginModel.currentIndex).then((value) async {
                       if (value == null) {
                         if (loginModel.currentIndex == 0) {
                           Toast.toast(context,
@@ -266,11 +266,12 @@ class _LoginPagePositionedState extends State<LoginPagePositioned> {
                         );
                         // value是序列化后的对象
                         // 转成json字符串传入
-                        ps.setStorage('userInfo',JsonEncoder().convert(value));  
+                        ps.setStorage('userInfo', JsonEncoder().convert(value));
                         // 存入本地持久化,需要转为map对象,类似于 json.decode(val)
                         var p = await ps.getStorage('userInfo');
                         // print(p["data"]["user_name"]);
-                        Provider.of<UserInfoModel>(context, listen: false).getUser_name(p);
+                        Provider.of<UserInfoModel>(context, listen: false)
+                            .getUser_name(p);
                         NavigatorUtil.goBack(context);
                       } else {
                         Toast.toast(

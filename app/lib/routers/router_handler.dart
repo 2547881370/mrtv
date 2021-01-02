@@ -1,6 +1,7 @@
 import 'package:app/screens/page/loginPage/login_page.dart';
 import 'package:app/screens/page/myPage/my_info.dart';
 import 'package:app/screens/page/myPage/my_member.dart';
+import 'package:app/screens/page/myPage/my_task.dart';
 import 'package:app/screens/page/myPage/my_update_name.dart';
 import 'package:app/screens/page/search/search_page.dart';
 import 'package:flutter/material.dart';
@@ -64,5 +65,12 @@ Handler userUpDateNamePageHanderl = Handler(
 Handler myMenmBerPageHanderl = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       return MyMenmBer();
+    }
+);
+
+// 任务中心
+Handler myTaskPageHanderl = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+      return MyTask();
     }
 );

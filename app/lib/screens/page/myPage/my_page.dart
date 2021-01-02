@@ -209,7 +209,7 @@ class MyPageListTask extends StatelessWidget {
     return Container(
       width: ScreenUtil().setWidth(750),
       child: Stack(
-        children: [myPageListTaskBox(), myPageListTaskPositioned()],
+        children: [myPageListTaskBox(), myPageListTaskPositioned(context)],
       ),
     );
   }
@@ -233,7 +233,7 @@ class MyPageListTask extends StatelessWidget {
     );
   }
 
-  Positioned myPageListTaskPositioned() {
+  Positioned myPageListTaskPositioned(context) {
     return Positioned(
       top: ScreenUtil().setHeight(80),
       child: Container(
@@ -252,7 +252,7 @@ class MyPageListTask extends StatelessWidget {
               ]),
           child: Column(
             children: [
-              myPageListTaskPositionedIcon(),
+              myPageListTaskPositionedIcon(context),
               myPageListTaskPositionedText()
             ],
           )),
@@ -291,7 +291,7 @@ class MyPageListTask extends StatelessWidget {
     ;
   }
 
-  Row myPageListTaskPositionedIcon() {
+  Row myPageListTaskPositionedIcon(context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
@@ -302,6 +302,7 @@ class MyPageListTask extends StatelessWidget {
               "assets/icons/rw.svg",
             ),
             fn: () {
+               NavigatorUtil.jump(context, '/myTask');
               print("任务中心");
             }),
         myPageListTaskListItem(
