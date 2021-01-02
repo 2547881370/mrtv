@@ -1,7 +1,9 @@
 import 'package:app/routers/navigator_util.dart';
+import 'package:app/view_model/my_menm_ber_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 
@@ -15,114 +17,127 @@ class MyMenmBer extends StatefulWidget {
 }
 
 class _MyMenmBerState extends State<MyMenmBer> {
+  final List<Widget> widgetList = [RechargeWidget(), MemberWidget()];
+
   @override
   Widget build(BuildContext context) {
     final double topPadding = MediaQuery.of(context).padding.top + 15;
     return Scaffold(
-      body:Container(
-        padding: EdgeInsets.symmetric(horizontal:ScreenUtil().setWidth(30)),
-        child:Column(
-          children: [
-            Container(
-            margin: EdgeInsets.only(top: topPadding),
-            child: MyPageTitle(),
-          ),
-          MyMenmBerNumber(),
-          SizedBox(
-            height:ScreenUtil().setHeight(5),
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(vertical:ScreenUtil().setHeight(25)),
-            child: CustomTabBar()
-          ),
-          MyMenbBerInput(title:"充值金额",hintText : "请输入要充值的金额",tips:Text("最小充值金额1元,1元可兑换10积分")),
-          SizedBox(
-            height:ScreenUtil().setHeight(60),
-          ),
-          MyMenbBerInput(title:"卡密充值积分",hintText : "输入粘贴密码",tips:Row(children: [
-            Text("友情提示"),
-            InkWell(
-              child:Text("点击进入在线充值链接",style:TextStyle(color:Colors.blue[600])),
-              onTap:()=>{
-                print("跳转webView")
-              }
-            )
-          ],)),
-          ],
-        )
-      )
-    );
+        body: Selector<MyMenmBerModel, int>(
+            selector: (context, value) => value.activeIndex,
+            builder: (context, data, child) {
+              print(data);
+              return Container(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: ScreenUtil().setWidth(30)),
+                  child: Column(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(top: topPadding),
+                        child: MyPageTitle(),
+                      ),
+                      MyMenmBerNumber(),
+                      SizedBox(
+                        height: ScreenUtil().setHeight(5),
+                      ),
+                      Container(
+                          padding: EdgeInsets.symmetric(
+                              vertical: ScreenUtil().setHeight(25)),
+                          child: CustomTabBar()),
+                      // _recharge(),
+                      Expanded(
+                        child: widgetList[data],
+                      )
+                    ],
+                  ));
+            }));
   }
 }
 
-class MyMenbBerInput extends StatelessWidget {
-  final String title;
-  final String hintText;
-  final Widget tips;
-  const MyMenbBerInput({
-    Key key,
-    @required this.title,
-    @required this.hintText,
-    @required this.tips,
-  }) : super(key: key);
+class MyMenbBerInput extends StatefulWidget {
+  String title;
+  String hintText;
+  Widget tips;
+  int fnIndex;
+  MyMenbBerInput({this.title, this.hintText, this.tips, this.fnIndex});
+  @override
+  _MyMenbBerInputState createState() => _MyMenbBerInputState();
+}
 
+class _MyMenbBerInputState extends State<MyMenbBerInput> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: ScreenUtil().setWidth(750),
-      child:Column(
-        children: [
+        width: ScreenUtil().setWidth(750),
+        child: Column(children: [
           Container(
-            padding: EdgeInsets.symmetric(horizontal:ScreenUtil().setWidth(20)),
-            decoration: BoxDecoration(
-              border: Border.all(  width: 1, //宽度
-                color: Colors.black12),
-                borderRadius: BorderRadius.all(Radius.circular(15))
-            ),
-            child:Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(title,style:TextStyle(color:Colors.black,fontSize: ScreenUtil().setSp(25))),
-                Container(margin:EdgeInsets.symmetric(horizontal:ScreenUtil().setWidth(10)), child: Text("|" , style:TextStyle(color:Colors.black,fontSize: ScreenUtil().setSp(25))),),
+              padding:
+                  EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(20)),
+              decoration: BoxDecoration(
+                  border: Border.all(
+                      width: 1, //宽度
+                      color: Colors.black12),
+                  borderRadius: BorderRadius.all(Radius.circular(15))),
+              child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                Text(widget.title,
+                    style: TextStyle(
+                        color: Colors.black, fontSize: ScreenUtil().setSp(25))),
+                Container(
+                  margin: EdgeInsets.symmetric(
+                      horizontal: ScreenUtil().setWidth(10)),
+                  child: Text("|",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: ScreenUtil().setSp(25))),
+                ),
                 Expanded(
-                  child: TextField(
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: hintText,
-                    hintStyle: TextStyle(color: Colors.grey),
-                    hintMaxLines: 1
-                  ),
-                 ),
+                  child:
+                      Consumer<MyMenmBerModel>(builder: (context, data, child) {
+                    return TextField(
+                      onChanged: (value) {
+                        data.set_valueList(int.parse(value), widget.fnIndex);
+                      },
+                      controller: data.valueList[widget.fnIndex].controller,
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: widget.hintText,
+                          hintStyle: TextStyle(color: Colors.grey),
+                          hintMaxLines: 1),
+                    );
+                  }),
                 )
-              ]
-            )
-          ),
-           SizedBox(
-            height:ScreenUtil().setHeight(10),
+              ])),
+          SizedBox(
+            height: ScreenUtil().setHeight(10),
           ),
           Container(
-            padding:EdgeInsets.symmetric(horizontal:ScreenUtil().setWidth(15),vertical:ScreenUtil().setHeight(10)),
-            alignment: Alignment.centerLeft,
-            child:tips
+              padding: EdgeInsets.symmetric(
+                  horizontal: ScreenUtil().setWidth(15),
+                  vertical: ScreenUtil().setHeight(10)),
+              alignment: Alignment.centerLeft,
+              child: widget.tips),
+          SizedBox(
+            height: ScreenUtil().setHeight(10),
           ),
-           SizedBox(
-            height:ScreenUtil().setHeight(10),
+          RaisedButton(
+            child: Container(
+                padding: EdgeInsets.symmetric(
+                    vertical: ScreenUtil().setHeight(10),
+                    horizontal: ScreenUtil().setWidth(20)),
+                alignment: Alignment.center,
+                child: Text("确定",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: ScreenUtil().setSp(27)))),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            onPressed: () {
+              // TODO : 父组件传递的点击回调函数
+            },
+            color: Color.fromRGBO(255, 102, 57, 1),
+            textColor: Colors.white,
           ),
-         RaisedButton(
-          child: Container(
-            padding: EdgeInsets.symmetric(vertical:ScreenUtil().setHeight(10),horizontal:ScreenUtil().setWidth(20)),
-            alignment: Alignment.center,
-            child : Text("确定",style:TextStyle(color:Colors.white,fontSize: ScreenUtil().setSp(27)))
-          ),
-          shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10)),
-          onPressed: () {},
-          color: Color.fromRGBO(255, 102, 57, 1),
-          textColor:Colors.white,
-          ),
-        ]
-      )
-    );
+        ]));
   }
 }
 
@@ -133,16 +148,14 @@ class CustomTabBar extends StatefulWidget {
 
 class _CustomTabBarState extends State<CustomTabBar>
     with SingleTickerProviderStateMixin {
-  final tabs = ['在线充值积分', '积分升级会员'];
+  List<TitleTabBar> tabs;
   TabController _tabController;
-
   final GlobalKey globalKey = GlobalKey();
-
-
 
   @override
   void initState() {
     super.initState();
+    tabs = Provider.of<MyMenmBerModel>(context, listen: false).titleTabBarList;
     _tabController = TabController(vsync: this, length: tabs.length);
   }
 
@@ -154,9 +167,15 @@ class _CustomTabBarState extends State<CustomTabBar>
 
   @override
   Widget build(BuildContext context) {
-    print("build");
-    return TabBar(
+    return Selector<MyMenmBerModel, int>(
+        selector: (context, value) => value.activeIndex,
+        builder: (context, data, child) {
+          _tabController.index = data;
+          return TabBar(
             onTap: (tab) {
+              Provider.of<MyMenmBerModel>(context, listen: false)
+                  .set_activeIndex(tab);
+
               // loginModel.setLoginCurrentIndex(tab);
             },
             isScrollable: true,
@@ -171,16 +190,16 @@ class _CustomTabBarState extends State<CustomTabBar>
             indicatorColor: Colors.orangeAccent,
             tabs: tabs
                 .map((e) => Container(
-                  width: ScreenUtil().setWidth(270),
-                     alignment: Alignment.center,
-                      child: Tab(text: e),
+                      width: ScreenUtil().setWidth(270),
+                      alignment: Alignment.center,
+                      child: Tab(text: e.content),
                     ))
                 .toList(),
           );
+        });
+    ;
   }
 }
-
-
 
 class MyMenmBerNumber extends StatelessWidget {
   const MyMenmBerNumber({
@@ -190,67 +209,57 @@ class MyMenmBerNumber extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical:ScreenUtil().setHeight(13)),
-      decoration: BoxDecoration(
-        color: Color.fromRGBO(255, 102, 57, 1),
-        borderRadius: BorderRadius.all(Radius.circular(10))
-      ),
-      child:Column(
-        children: [
+        padding: EdgeInsets.symmetric(vertical: ScreenUtil().setHeight(13)),
+        decoration: BoxDecoration(
+            color: Color.fromRGBO(255, 102, 57, 1),
+            borderRadius: BorderRadius.all(Radius.circular(10))),
+        child: Column(children: [
           Container(
-        padding: EdgeInsets.only(left:ScreenUtil().setWidth(50),top:ScreenUtil().setHeight(30),bottom:ScreenUtil().setHeight(30)),
-        child:Row(
-          children: [
+              padding: EdgeInsets.only(
+                  left: ScreenUtil().setWidth(50),
+                  top: ScreenUtil().setHeight(30),
+                  bottom: ScreenUtil().setHeight(30)),
+              child: Row(children: [
+                Container(
+                    height: ScreenUtil().setHeight(65),
+                    child: ClipOval(
+                      child: new Image.network(
+                        'https://pic2.zhimg.com/v2-639b49f2f6578eabddc458b84eb3c6a1.jpg',
+                      ),
+                    )),
+                Container(
+                    margin: EdgeInsets.only(left: ScreenUtil().setWidth(20)),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("默认会员: 极速TVQLG86",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: ScreenUtil().setSp(25))),
+                          Text("VIP有效期: 2020-01-01 08:00:00",
+                              style: TextStyle(color: Colors.white))
+                        ]))
+              ])),
           Container(
-            height: ScreenUtil().setHeight(65),
-            child:ClipOval( 
-              child: new Image.network(
-                  'https://pic2.zhimg.com/v2-639b49f2f6578eabddc458b84eb3c6a1.jpg',
-                  ),
-                )
-            ),
-            Container(
-              margin: EdgeInsets.only(left:ScreenUtil().setWidth(20)),
-              child:Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("默认会员: 极速TVQLG86",style:TextStyle(color:Colors.white,fontSize: ScreenUtil().setSp(25))),
-                Text("VIP有效期: 2020-01-01 08:00:00",style:TextStyle(color:Colors.white))
-              ]
-            )
-            )
-          ]
-        )
-      ),
-      Container(
-        child:Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Column(
-              children: [
-                Text("10" , style:TextStyle(color:Colors.white)),
-                Text("剩余积分" , style:TextStyle(color:Colors.white)),
-              ]
-            ),
-            Container(
-              width:ScreenUtil().setWidth(5),
-              height: ScreenUtil().setHeight(50),
-              decoration: BoxDecoration(
-                color:Colors.white,
-              )
-            ),
-             Column(
-              children: [
-                Text("10" , style:TextStyle(color:Colors.white)),
-                Text("剩余金币" , style:TextStyle(color:Colors.white)),
-              ]
-            ),
-          ]
-        )
-      )
-        ]
-      )
-    );
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                Column(children: [
+                  Text("10", style: TextStyle(color: Colors.white)),
+                  Text("剩余积分", style: TextStyle(color: Colors.white)),
+                ]),
+                Container(
+                    width: ScreenUtil().setWidth(5),
+                    height: ScreenUtil().setHeight(50),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                    )),
+                Column(children: [
+                  Text("10", style: TextStyle(color: Colors.white)),
+                  Text("剩余金币", style: TextStyle(color: Colors.white)),
+                ]),
+              ]))
+        ]));
   }
 }
 
@@ -273,18 +282,18 @@ class MyPageTitle extends StatelessWidget {
                   onTap: () {
                     NavigatorUtil.goBack(context);
                   },
-                  child: SvgPicture.asset(
-                    "assets/icons/fanhui.svg",
-                    color: Colors.black
-                  ))),
+                  child: SvgPicture.asset("assets/icons/fanhui.svg",
+                      color: Colors.black))),
           Expanded(
               child: Container(
             alignment: Alignment.center,
-            child: Text(
-              "充值",
-              style: TextStyle(
-                  color: Colors.black, fontSize: ScreenUtil().setSp(25)),
-            ),
+            child: Consumer<MyMenmBerModel>(builder: (context, data, child) {
+              return Text(
+                data.titleTabBarList[data.activeIndex].title,
+                style: TextStyle(
+                    color: Colors.black, fontSize: ScreenUtil().setSp(25)),
+              );
+            }),
           )),
           Container(
             width: ScreenUtil().setWidth(40),
@@ -294,4 +303,147 @@ class MyPageTitle extends StatelessWidget {
       ),
     );
   }
+}
+
+// 在线充值积分
+class RechargeWidget extends StatefulWidget {
+  @override
+  _RechargeWidgetState createState() => _RechargeWidgetState();
+}
+
+class _RechargeWidgetState extends State<RechargeWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        child: Column(
+      children: [
+        MyMenbBerInput(
+            title: "充值金额",
+            hintText: "请输入要充值的金额",
+            tips: Text("最小充值金额1元,1元可兑换10积分"),
+            fnIndex: 0),
+        SizedBox(
+          height: ScreenUtil().setHeight(60),
+        ),
+        MyMenbBerInput(
+            title: "卡密充值积分",
+            hintText: "输入粘贴密码",
+            tips: Row(
+              children: [
+                Text("友情提示"),
+                InkWell(
+                  child: Text("点击进入在线充值链接",
+                      style: TextStyle(color: Colors.blue[600])),
+                  onTap: () => {print("跳转webView")},
+                )
+              ],
+            ),
+            fnIndex: 1)
+      ],
+    ));
+  }
+}
+
+// 积分升级会员
+class MemberWidget extends StatefulWidget {
+  @override
+  _MemberWidgetState createState() => _MemberWidgetState();
+}
+
+class _MemberWidgetState extends State<MemberWidget> {
+  List<MemberWidgetListItem> listItem = [
+    MemberWidgetListItem(
+        title: "VIP会员", timeName: "包天", number: "10", status: true),
+    MemberWidgetListItem(
+        title: "VIP会员", timeName: "包周", number: "70", status: true),
+    MemberWidgetListItem(
+        title: "VIP会员", timeName: "包月", number: "300", status: true),
+    MemberWidgetListItem(
+        title: "VIP会员", timeName: "包年", number: "3600", status: true),
+    MemberWidgetListItem(
+        title: "VIP会员", timeName: "代理", number: "2000", status: true),
+    MemberWidgetListItem(title: "推广提升会员等级", status: false),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        alignment: Alignment.centerLeft,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("请选择升级选项",
+                style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: ScreenUtil().setSp(25),
+                    fontWeight: FontWeight.bold)),
+            Text("点击需要升级的会员组和市场进行购买升级",
+                style: TextStyle(
+                    color: Colors.grey[400], fontSize: ScreenUtil().setSp(20))),
+            Expanded(
+              child: BuilderGridView(listItem: listItem),
+            )
+          ],
+        ));
+  }
+}
+
+class BuilderGridView extends StatelessWidget {
+  final List<MemberWidgetListItem> listItem;
+  BuilderGridView({this.listItem});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: GridView.builder(
+          itemCount: listItem.length,
+          scrollDirection: Axis.vertical,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              //网格代理：定交叉轴数目
+              crossAxisCount: 2, //条目个数
+              mainAxisSpacing: 10, //主轴间距
+              crossAxisSpacing: 7, //交叉轴间距
+              childAspectRatio: 1 / 0.418),
+          itemBuilder: (_, int position) => _buildItem(listItem[position])),
+    );
+  }
+
+  Widget _buildItem(MemberWidgetListItem item) => RaisedButton(
+      color: Color.fromRGBO(255, 102, 57, 1),
+      textColor: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      onPressed: () {
+        if (item.status) {
+          // TODO : 调取增加会员期限接口
+          print(item.number);
+        } else {
+          // TODO : ROUTER 跳转推广页面
+        }
+      },
+      child: Container(
+          padding: EdgeInsets.symmetric(
+              horizontal: ScreenUtil().setWidth(20),
+              vertical: ScreenUtil().setHeight(10)),
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+          ),
+          child: item.status == true
+              ? Column(
+                  children: [
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      child: Text("${item.title}",
+                          style: TextStyle(color: Colors.white)),
+                    ),
+                    Expanded(
+                      child: Container(
+                        alignment: Alignment.centerRight,
+                        child: Text("${item.timeName}  ${item.number}",
+                            style: TextStyle(color: Colors.white)),
+                      ),
+                    ),
+                  ],
+                )
+              : Text("${item.title}", style: TextStyle(color: Colors.white))));
 }
