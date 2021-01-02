@@ -89,10 +89,14 @@ class _MyTaskState extends State<MyTask> {
               Expanded(
                   child: Container(
                       decoration: BoxDecoration(color: Colors.grey[200]),
-                      child: ListView.builder(
-                          itemCount: myTaskList.length,
-                          itemBuilder: (content, index) =>
-                              MyTasskContent(item: myTaskList[index]))))
+                      child: MediaQuery.removePadding(
+                        removeTop: true,
+                        context: context,
+                        child: ListView.builder(
+                            itemCount: myTaskList.length,
+                            itemBuilder: (content, index) =>
+                                MyTasskContent(item: myTaskList[index])),
+                      )))
             ])));
   }
 
@@ -208,9 +212,9 @@ class _MyTasskContentState extends State<MyTasskContent> {
   Widget build(BuildContext context) {
     return Container(
         padding: EdgeInsets.only(
-            top: ScreenUtil().setHeight(20),
             left: ScreenUtil().setWidth(30),
-            right: ScreenUtil().setWidth(30)),
+            right: ScreenUtil().setWidth(30),
+            top: ScreenUtil().setHeight(20)),
         child: Column(children: [
           Container(
               padding: EdgeInsets.symmetric(
@@ -252,19 +256,20 @@ class _MyTasskContentState extends State<MyTasskContent> {
 
   Row _myTasskContentRow() {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-            margin: EdgeInsets.only(right: ScreenUtil().setWidth(10)),
+            margin: EdgeInsets.only(right: ScreenUtil().setWidth(20)),
             height: ScreenUtil().setHeight(45),
             width: ScreenUtil().setWidth(45),
             child: SvgPicture.asset(
               widget.item.iconStr,
             )),
-        Column(children: [
+        Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(widget.item.title,
               style:
                   TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
-          Row(children: [
+          Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Container(
                 margin: EdgeInsets.only(right: ScreenUtil().setWidth(5)),
                 width: ScreenUtil().setWidth(16),
