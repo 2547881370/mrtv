@@ -351,19 +351,13 @@ class MemberWidget extends StatefulWidget {
 }
 
 class _MemberWidgetState extends State<MemberWidget> {
-  List<MemberWidgetListItem> listItem = [
-    MemberWidgetListItem(
-        title: "VIP会员", timeName: "包天", number: "10", status: true),
-    MemberWidgetListItem(
-        title: "VIP会员", timeName: "包周", number: "70", status: true),
-    MemberWidgetListItem(
-        title: "VIP会员", timeName: "包月", number: "300", status: true),
-    MemberWidgetListItem(
-        title: "VIP会员", timeName: "包年", number: "3600", status: true),
-    MemberWidgetListItem(
-        title: "VIP会员", timeName: "代理", number: "2000", status: true),
-    MemberWidgetListItem(title: "推广提升会员等级", status: false),
-  ];
+  List<MemberWidgetListItem> listItem;
+
+  @override
+  void initState() {
+    listItem = Provider.of<MyMenmBerModel>(context, listen: false).listItem;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -404,46 +398,149 @@ class BuilderGridView extends StatelessWidget {
               mainAxisSpacing: 10, //主轴间距
               crossAxisSpacing: 7, //交叉轴间距
               childAspectRatio: 1 / 0.418),
-          itemBuilder: (_, int position) => _buildItem(listItem[position])),
+          itemBuilder: (_, int position) =>
+              _buildItem(listItem[position], context)),
     );
   }
 
-  Widget _buildItem(MemberWidgetListItem item) => RaisedButton(
-      color: Color.fromRGBO(255, 102, 57, 1),
-      textColor: Colors.white,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      onPressed: () {
-        if (item.status) {
-          // TODO : 调取增加会员期限接口
-          print(item.number);
-        } else {
-          // TODO : ROUTER 跳转推广页面
-        }
-      },
-      child: Container(
-          padding: EdgeInsets.symmetric(
-              horizontal: ScreenUtil().setWidth(20),
-              vertical: ScreenUtil().setHeight(10)),
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
+  Widget _buildDialog() => Dialog(
+        backgroundColor: Colors.white,
+        elevation: 5,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10))),
+        child: Container(
+          width: ScreenUtil().setWidth(100),
+          child: DeleteDialog(),
+        ),
+      );
+
+  Widget _buildItem(MemberWidgetListItem item, BuildContext context) =>
+      RaisedButton(
+          color: Color.fromRGBO(255, 102, 57, 1),
+          textColor: Colors.white,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          onPressed: () {
+            if (item.status) {
+              // TODO : 调取增加会员期限接口
+              Provider.of<MyMenmBerModel>(context, listen: false)
+                  .set_listItemIndex(item);
+              showDialog(context: context, builder: (ctx) => _buildDialog());
+              print(item.number);
+            } else {
+              // TODO : ROUTER 跳转推广页面
+            }
+          },
+          child: Container(
+              padding: EdgeInsets.symmetric(
+                  horizontal: ScreenUtil().setWidth(20),
+                  vertical: ScreenUtil().setHeight(10)),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+              ),
+              child: item.status == true
+                  ? Column(
+                      children: [
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          child: Text("${item.title}",
+                              style: TextStyle(color: Colors.white)),
+                        ),
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.centerRight,
+                            child: Text("${item.timeName}  ${item.number}",
+                                style: TextStyle(color: Colors.white)),
+                          ),
+                        ),
+                      ],
+                    )
+                  : Text("${item.title}",
+                      style: TextStyle(color: Colors.white))));
+}
+
+class DeleteDialog extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          _buildBar(context),
+          _buildTitle(),
+          _buildContent(context),
+          _buildFooter(context),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTitle() {
+    return Text(
+      '提示',
+      style: TextStyle(color: Color(0xff5CC5E9), fontSize: ScreenUtil().setSp(26)),
+    );
+  }
+
+  Widget _buildContent(context) {
+    return Consumer<MyMenmBerModel>(builder: (context, data, child) {
+      return Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Text(
+          '确定花费${data.listItemActive.number}积分'
+          '兑换${data.listItemActive.remarks}天会员',
+          style: TextStyle(color: Color(0xffCFCFCF), fontSize: ScreenUtil().setSp(20)),
+          textAlign: TextAlign.justify,
+        ),
+      );
+    });
+  }
+
+  Widget _buildFooter(context) {
+    return Padding(
+      padding:
+          const EdgeInsets.only(bottom: 15.0, top: 10, left: 10, right: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          InkWell(
+              onTap: () => Navigator.of(context).pop(),
+              child: Container(
+                alignment: Alignment.center,
+                height: ScreenUtil().setHeight(40),
+                width: ScreenUtil().setWidth(100),
+                decoration: BoxDecoration(color: Colors.white),
+                child: Text('取消',
+                    style: TextStyle(color: Colors.black, fontSize: ScreenUtil().setSp(20))),
+              )),
+          InkWell(
+            onTap: () => Navigator.of(context).pop(),
+            child: Container(
+              alignment: Alignment.center,
+              height: ScreenUtil().setHeight(40),
+              width: ScreenUtil().setWidth(100),
+              decoration: BoxDecoration(
+                  color: Colors.orangeAccent),
+              child: Text('确定',
+                  style: TextStyle(color: Colors.white, fontSize: ScreenUtil().setSp(20))),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  _buildBar(context) => Container(
+        height: 30,
+        alignment: Alignment.centerRight,
+        margin: EdgeInsets.only(right: 10, top: 5),
+        child: InkWell(
+          onTap: () => Navigator.of(context).pop(),
+          child: Icon(
+            Icons.close,
+            color: Color(0xff82CAE3),
           ),
-          child: item.status == true
-              ? Column(
-                  children: [
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      child: Text("${item.title}",
-                          style: TextStyle(color: Colors.white)),
-                    ),
-                    Expanded(
-                      child: Container(
-                        alignment: Alignment.centerRight,
-                        child: Text("${item.timeName}  ${item.number}",
-                            style: TextStyle(color: Colors.white)),
-                      ),
-                    ),
-                  ],
-                )
-              : Text("${item.title}", style: TextStyle(color: Colors.white))));
+        ),
+      );
 }
