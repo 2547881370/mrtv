@@ -330,6 +330,7 @@ class MyPageListTask extends StatelessWidget {
               "assets/icons/qd.svg",
             ),
             fn: () {
+              NavigatorUtil.jump(context, '/myWithdrawal');
               print("金币提现");
             }),
       ],

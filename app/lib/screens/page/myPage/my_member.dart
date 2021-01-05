@@ -479,8 +479,7 @@ class DeleteDialog extends StatelessWidget {
   Widget _buildTitle() {
     return Text(
       '提示',
-      style:
-          TextStyle(color: Color(0xff5CC5E9), fontSize: ScreenUtil().setSp(26)),
+      style: TextStyle(color: Color(0xff5CC5E9), fontSize: ScreenUtil().setSp(26)),
     );
   }
 
@@ -491,8 +490,7 @@ class DeleteDialog extends StatelessWidget {
         child: Text(
           '确定花费${data.listItemActive.number}积分'
           '兑换${data.listItemActive.remarks}天会员',
-          style: TextStyle(
-              color: Color(0xffCFCFCF), fontSize: ScreenUtil().setSp(20)),
+          style: TextStyle(color: Color(0xffCFCFCF), fontSize: ScreenUtil().setSp(20)),
           textAlign: TextAlign.justify,
         ),
       );
@@ -514,8 +512,7 @@ class DeleteDialog extends StatelessWidget {
                 width: ScreenUtil().setWidth(100),
                 decoration: BoxDecoration(color: Colors.white),
                 child: Text('取消',
-                    style: TextStyle(
-                        color: Colors.black, fontSize: ScreenUtil().setSp(20))),
+                    style: TextStyle(color: Colors.black, fontSize: ScreenUtil().setSp(20))),
               )),
           InkWell(
             onTap: () => Navigator.of(context).pop(),
@@ -523,10 +520,10 @@ class DeleteDialog extends StatelessWidget {
               alignment: Alignment.center,
               height: ScreenUtil().setHeight(40),
               width: ScreenUtil().setWidth(100),
-              decoration: BoxDecoration(color: Colors.orangeAccent),
+              decoration: BoxDecoration(
+                  color: Colors.orangeAccent),
               child: Text('确定',
-                  style: TextStyle(
-                      color: Colors.white, fontSize: ScreenUtil().setSp(20))),
+                  style: TextStyle(color: Colors.white, fontSize: ScreenUtil().setSp(20))),
             ),
           )
         ],

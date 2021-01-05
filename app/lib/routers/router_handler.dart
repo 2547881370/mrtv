@@ -3,6 +3,7 @@ import 'package:app/screens/page/myPage/my_info.dart';
 import 'package:app/screens/page/myPage/my_member.dart';
 import 'package:app/screens/page/myPage/my_task.dart';
 import 'package:app/screens/page/myPage/my_update_name.dart';
+import 'package:app/screens/page/myPage/my_withdrawal.dart';
 import 'package:app/screens/page/search/search_page.dart';
 import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
@@ -72,5 +73,12 @@ Handler myMenmBerPageHanderl = Handler(
 Handler myTaskPageHanderl = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       return MyTask();
+    }
+);
+
+// 金币提现
+Handler myWithdrawalPageHanderl = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+      return MyWithdrawal();
     }
 );
