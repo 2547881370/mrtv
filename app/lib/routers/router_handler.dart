@@ -1,4 +1,5 @@
 import 'package:app/screens/page/loginPage/login_page.dart';
+import 'package:app/screens/page/myPage/my_extension.dart';
 import 'package:app/screens/page/myPage/my_info.dart';
 import 'package:app/screens/page/myPage/my_member.dart';
 import 'package:app/screens/page/myPage/my_task.dart';
@@ -80,5 +81,12 @@ Handler myTaskPageHanderl = Handler(
 Handler myWithdrawalPageHanderl = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       return MyWithdrawal();
+    }
+);
+
+// 金币提现
+Handler myExtensionPageHanderl = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+      return MyExtension();
     }
 );

@@ -180,6 +180,7 @@ class MyPageAdvertisement extends StatelessWidget {
             )),
         child: InkWell(
             onTap: () {
+              NavigatorUtil.jump(context, '/myExtension');
               print("提升会员等级");
             },
             child: Container(
@@ -549,6 +550,7 @@ class MyPageShowUserInfo extends StatelessWidget {
                           child: Image.network(
                           NWApi.baseApi + userPortrait,
                           fit: BoxFit.cover,
+                           width: ScreenUtil().setWidth(110),
                         ));
                 }),
               ),
