@@ -336,7 +336,9 @@ class MyPageTitle extends StatelessWidget {
                       color: Colors.white, fontSize: ScreenUtil().setSp(25)),
                 ),
               ),
-              onTap: () => {print("我的推广")})
+              onTap: () => {
+                NavigatorUtil.jump(context, '/myExtensionList')
+              })
         ],
       ),
     );

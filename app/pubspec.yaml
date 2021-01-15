@@ -39,6 +39,7 @@ dependencies:
   flutter_svg: 0.17.3+1
   shared_preferences: ^0.5.1
   image_picker: ^0.6.7+17
+  pull_to_refresh: ^1.6.3
 
 dev_dependencies:
   flutter_test:
