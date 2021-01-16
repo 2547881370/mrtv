@@ -105,6 +105,8 @@ class _MyLogState extends State<MyLog> {
         _list.removeLast();
       });
     }
+    
+    _setRemoveCount();
 
     // 刷新完成,控制器结束
     _refreshController.refreshCompleted();
@@ -126,6 +128,7 @@ class _MyLogState extends State<MyLog> {
           .toList();
     });
   }
+
 
   Widget buildHeader(BuildContext context, RefreshStatus mode) {
     return Container(
