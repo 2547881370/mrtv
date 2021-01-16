@@ -2,6 +2,7 @@ import 'package:app/screens/page/loginPage/login_page.dart';
 import 'package:app/screens/page/myPage/my_extension.dart';
 import 'package:app/screens/page/myPage/my_extension_list.dart';
 import 'package:app/screens/page/myPage/my_info.dart';
+import 'package:app/screens/page/myPage/my_log.dart';
 import 'package:app/screens/page/myPage/my_member.dart';
 import 'package:app/screens/page/myPage/my_task.dart';
 import 'package:app/screens/page/myPage/my_update_name.dart';
@@ -96,5 +97,12 @@ Handler myExtensionPageHanderl = Handler(
 Handler myExtensionListPageHanderl = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       return MyExtensionList();
+    }
+);
+
+// 播放记录
+Handler myLogtPageHanderl = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+      return MyLog();
     }
 );

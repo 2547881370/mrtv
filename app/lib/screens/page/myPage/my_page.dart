@@ -66,6 +66,7 @@ class MyPageContent extends StatelessWidget {
                 "assets/icons/bfjl.svg",
               ),
               fn: () {
+                NavigatorUtil.jump(context, '/myLog');
                 print("播放记录");
               }),
           buildContainerItem(

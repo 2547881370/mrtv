@@ -16,6 +16,7 @@ class Routes {
   static String myWithdrawal = '/myWithdrawal';
   static String myExtension = '/myExtension';
   static String myExtensionList = '/myExtensionList';
+  static String myLog = '/myLog';
   static void configureRoutes(Router router) {
     router.notFoundHandler = new Handler(
       handlerFunc: (BuildContext context, Map<String, List<String>> params) {
@@ -37,5 +38,6 @@ class Routes {
     router.define(myWithdrawal, handler: myWithdrawalPageHanderl);
     router.define(myExtension, handler: myExtensionPageHanderl);
     router.define(myExtensionList, handler: myExtensionListPageHanderl);
+    router.define(myLog, handler: myLogtPageHanderl);
   }
 }
