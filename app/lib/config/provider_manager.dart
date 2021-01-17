@@ -1,5 +1,6 @@
 import 'package:app/view_model/home_model.dart';
 import 'package:app/view_model/login_model.dart';
+import 'package:app/view_model/my_log_video_model.dart';
 import 'package:app/view_model/my_menm_ber_model.dart';
 import 'package:app/view_model/user_model.dart';
 import 'package:provider/provider.dart';
@@ -31,6 +32,9 @@ List<SingleChildWidget> independentServices = [
   ),
   ChangeNotifierProvider<MyMenmBerModel>(
     create: (context) => MyMenmBerModel(),
+  ),
+  ChangeNotifierProvider<MyLogVideoModel>(
+    create: (context) => MyLogVideoModel(),
   ),
 //  ChangeNotifierProvider<LocaleModel>(
 //    create: (context) => LocaleModel(),

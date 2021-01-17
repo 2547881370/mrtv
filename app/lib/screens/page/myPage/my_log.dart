@@ -2,32 +2,12 @@ import 'package:app/components/header/header_title.dart';
 import 'package:app/components/home/background_component.dart';
 import 'package:app/components/toast/Toast_postion.dart';
 import 'package:app/routers/navigator_util.dart';
+import 'package:app/view_model/my_log_video_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-
-class MyLogItem {
-  // 电影主键
-  int videoId;
-  // 电影图片
-  String imgSrc;
-  // 电影名称
-  String title;
-  // 电影是否有观看进度
-  bool historyStatus;
-  // 电影观看进度值
-  String historyContent;
-  // 是否选中
-  bool selected;
-  MyLogItem(
-      {this.videoId,
-      this.title,
-      this.imgSrc,
-      this.historyStatus,
-      this.historyContent,
-      this.selected});
-}
 
 /**
  * 播放记录
@@ -50,42 +30,9 @@ class _MyLogState extends State<MyLog> {
   // 删除数量
   int removeCount = 0;
 
-  List<MyLogItem> _list = [
-    MyLogItem(
-        videoId: 1,
-        imgSrc:
-            'https://dss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=332699651,4280033699&fm=58&app=83&f=JPEG?w=150&h=200',
-        title: '送你一朵小红花',
-        historyStatus: false,
-        historyContent: null,
-        selected: false),
-    MyLogItem(
-        videoId: 2,
-        imgSrc:
-            'https://dss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=1997080233,2628850022&fm=58&app=83&f=JPEG?w=150&h=200',
-        title: '除暴',
-        historyStatus: true,
-        historyContent: '1',
-        selected: false),
-    MyLogItem(
-        videoId: 3,
-        imgSrc:
-            'https://dss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=2190345723,1781415046&fm=58&app=83&f=JPEG?w=150&h=200',
-        title: '沐浴之王',
-        historyStatus: true,
-        historyContent: '1',
-        selected: false),
-    MyLogItem(
-        videoId: 4,
-        imgSrc:
-            'https://dss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=1922438484,2393437791&fm=58&app=83&f=JPEG?w=300&h=400&s=86A26DA586236EB51FB809710300D0D0',
-        title: '拆弹专家2',
-        historyStatus: true,
-        historyContent: '12',
-        selected: false),
-  ];
-
   void _setRemoveCount() {
+    List<MyLogItem> _list =
+        Provider.of<MyLogVideoModel>(context, listen: false).list;
     List list = _list.sublist(0);
     list.retainWhere((b) => b.selected == true);
     setState(() {
@@ -95,17 +42,18 @@ class _MyLogState extends State<MyLog> {
   }
 
   void _onRefresh() async {
+    List<MyLogItem> _list =
+        Provider.of<MyLogVideoModel>(context, listen: false).list;
     // TODO : 下拉回调
 
     // 延时器
     await Future.delayed(Duration(milliseconds: 1000));
 
     if (_list.length > 1) {
-      setState(() {
-        _list.removeLast();
-      });
+      _list.removeLast();
+      Provider.of<MyLogVideoModel>(context, listen: false).setList(_list);
     }
-    
+
     _setRemoveCount();
 
     // 刷新完成,控制器结束
@@ -117,18 +65,21 @@ class _MyLogState extends State<MyLog> {
       updateStatus = !updateStatus;
       allStatus = false;
       removeCount = 0;
-      _list = _list
-          .map((b) => MyLogItem(
-              videoId: b.videoId,
-              imgSrc: b.imgSrc,
-              title: b.title,
-              historyStatus: b.historyStatus,
-              historyContent: b.historyContent,
-              selected: false))
-          .toList();
     });
-  }
 
+    List<MyLogItem> _list =
+        Provider.of<MyLogVideoModel>(context, listen: false).list;
+    _list = _list
+        .map((b) => MyLogItem(
+            videoId: b.videoId,
+            imgSrc: b.imgSrc,
+            title: b.title,
+            historyStatus: b.historyStatus,
+            historyContent: b.historyContent,
+            selected: false))
+        .toList();
+    Provider.of<MyLogVideoModel>(context, listen: false).setList(_list);
+  }
 
   Widget buildHeader(BuildContext context, RefreshStatus mode) {
     return Container(
@@ -147,15 +98,16 @@ class _MyLogState extends State<MyLog> {
   Widget build(BuildContext context) {
     final double topPadding = MediaQuery.of(context).padding.top + 15;
 
-    return Scaffold(
-        body: BackgroundComponent(
-            child: Column(
-      children: [
-        _title(topPadding),
-        _content(),
-        updateStatus ? _bottom() : Container()
-      ],
-    )));
+    return Scaffold(body: BackgroundComponent(
+        child: Consumer<MyLogVideoModel>(builder: (context, data, child) {
+      return Column(
+        children: [
+          _title(topPadding),
+          _content(),
+          updateStatus ? _bottom() : Container()
+        ],
+      );
+    })));
   }
 
   Widget _bottom() {
@@ -175,16 +127,23 @@ class _MyLogState extends State<MyLog> {
                   onPressed: () {
                     setState(() {
                       allStatus = !allStatus;
-                      _list = _list
-                          .map((b) => MyLogItem(
-                              videoId: b.videoId,
-                              imgSrc: b.imgSrc,
-                              title: b.title,
-                              historyStatus: b.historyStatus,
-                              historyContent: b.historyContent,
-                              selected: allStatus))
-                          .toList();
                     });
+
+                    List<MyLogItem> _list =
+                        Provider.of<MyLogVideoModel>(context, listen: false)
+                            .list;
+                    _list = _list
+                        .map((b) => MyLogItem(
+                            videoId: b.videoId,
+                            imgSrc: b.imgSrc,
+                            title: b.title,
+                            historyStatus: b.historyStatus,
+                            historyContent: b.historyContent,
+                            selected: allStatus))
+                        .toList();
+                    Provider.of<MyLogVideoModel>(context, listen: false)
+                        .setList(_list);
+
                     _setRemoveCount();
                   },
                   child: Container(
@@ -206,10 +165,12 @@ class _MyLogState extends State<MyLog> {
                         return false;
                       }
 
+                      List<MyLogItem> _list =
+                          Provider.of<MyLogVideoModel>(context, listen: false)
+                              .list;
                       _list.retainWhere((b) => b.selected == false);
-                      setState(() {
-                        _list = _list;
-                      });
+                      Provider.of<MyLogVideoModel>(context, listen: false)
+                          .setList(_list);
                     },
                     child: Container(
                         height: ScreenUtil().setHeight(80),
@@ -236,9 +197,11 @@ class _MyLogState extends State<MyLog> {
   Widget _checkboxList() {
     return ListView.builder(
       //列表数量
-      itemCount: _list.length,
+      itemCount:
+          Provider.of<MyLogVideoModel>(context, listen: false).list.length,
       itemBuilder: (BuildContext context, int index) {
-        MyLogItem _item = _list[index];
+        MyLogItem _item =
+            Provider.of<MyLogVideoModel>(context, listen: false).list[index];
         return _checkbox(item: _item, index: index);
       },
     );
@@ -254,9 +217,11 @@ class _MyLogState extends State<MyLog> {
           Checkbox(
             value: item.selected,
             onChanged: (bool value) {
-              setState(() {
-                _list[index].selected = value;
-              });
+              List<MyLogItem> _list =
+                  Provider.of<MyLogVideoModel>(context, listen: false).list;
+              _list[index].selected = value;
+              Provider.of<MyLogVideoModel>(context, listen: false)
+                  .setList(_list);
 
               _setRemoveCount();
             },
@@ -283,9 +248,11 @@ class _MyLogState extends State<MyLog> {
   ListView _listView() {
     return ListView.builder(
       //列表数量
-      itemCount: _list.length,
+      itemCount:
+          Provider.of<MyLogVideoModel>(context, listen: false).list.length,
       itemBuilder: (BuildContext context, int index) {
-        MyLogItem item = _list[index];
+        MyLogItem item =
+            Provider.of<MyLogVideoModel>(context, listen: false).list[index];
         return _item(item: item);
       },
     );

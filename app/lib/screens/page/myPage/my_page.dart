@@ -13,6 +13,8 @@ import 'package:provider/provider.dart';
 import '../../../constants.dart';
 import 'package:intl/intl.dart';
 
+import 'my_log_video_list.dart';
+
 class MyPage extends StatefulWidget {
   MyPage({Key key}) : super(key: key);
 
@@ -69,6 +71,10 @@ class MyPageContent extends StatelessWidget {
                 NavigatorUtil.jump(context, '/myLog');
                 print("播放记录");
               }),
+          Container(
+            height: ScreenUtil().setHeight(185),
+            child: MyLogVideoList(),
+          ),
           buildContainerItem(
               title: "我的推广",
               icon: SvgPicture.asset(
@@ -304,7 +310,7 @@ class MyPageListTask extends StatelessWidget {
               "assets/icons/rw.svg",
             ),
             fn: () {
-               NavigatorUtil.jump(context, '/myTask');
+              NavigatorUtil.jump(context, '/myTask');
               print("任务中心");
             }),
         myPageListTaskListItem(
@@ -551,7 +557,7 @@ class MyPageShowUserInfo extends StatelessWidget {
                           child: Image.network(
                           NWApi.baseApi + userPortrait,
                           fit: BoxFit.cover,
-                           width: ScreenUtil().setWidth(110),
+                          width: ScreenUtil().setWidth(110),
                         ));
                 }),
               ),
